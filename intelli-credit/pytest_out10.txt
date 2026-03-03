@@ -1,0 +1,43 @@
+........................................................................ [ 26%]
+........................................................................ [ 53%]
+.............................................FFF........................ [ 80%]
+...................................................                      [100%]
+================================== FAILURES ===================================
+_ TestDetectCircularTrading.test_circular_trading_detected_for_dominant_supplier _
+
+self = <tests.test_gst_validator.TestDetectCircularTrading object at 0x000001BDECBDA210>
+validator_circular = <modules.document_intelligence.gst_validator.GSTCrossValidator object at 0x000001BDECBFA430>
+
+    def test_circular_trading_detected_for_dominant_supplier(self, validator_circular):
+>       is_circular, flagged = validator_circular.detect_circular_trading()
+        ^^^^^^^^^^^^^^^^^^^^
+E       ValueError: too many values to unpack (expected 2)
+
+tests\test_gst_validator.py:189: ValueError
+______ TestDetectCircularTrading.test_no_circular_trading_in_clean_data _______
+
+self = <tests.test_gst_validator.TestDetectCircularTrading object at 0x000001BDECBDA350>
+validator_clean = <modules.document_intelligence.gst_validator.GSTCrossValidator object at 0x000001BDECD70130>
+
+    def test_no_circular_trading_in_clean_data(self, validator_clean):
+>       is_circular, flagged = validator_clean.detect_circular_trading()
+        ^^^^^^^^^^^^^^^^^^^^
+E       ValueError: too many values to unpack (expected 2)
+
+tests\test_gst_validator.py:194: ValueError
+____________ TestDetectCircularTrading.test_returns_bool_and_list _____________
+
+self = <tests.test_gst_validator.TestDetectCircularTrading object at 0x000001BDECBA2B10>
+validator_from_files = <modules.document_intelligence.gst_validator.GSTCrossValidator object at 0x000001BDECCFBD40>
+
+    def test_returns_bool_and_list(self, validator_from_files):
+>       is_circular, flagged = validator_from_files.detect_circular_trading()
+        ^^^^^^^^^^^^^^^^^^^^
+E       ValueError: too many values to unpack (expected 2)
+
+tests\test_gst_validator.py:200: ValueError
+=========================== short test summary info ===========================
+FAILED tests/test_gst_validator.py::TestDetectCircularTrading::test_circular_trading_detected_for_dominant_supplier
+FAILED tests/test_gst_validator.py::TestDetectCircularTrading::test_no_circular_trading_in_clean_data
+FAILED tests/test_gst_validator.py::TestDetectCircularTrading::test_returns_bool_and_list
+3 failed, 264 passed in 12.34s

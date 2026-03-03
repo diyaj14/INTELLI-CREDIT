@@ -186,21 +186,22 @@ class TestComputeMismatchPct:
 class TestDetectCircularTrading:
 
     def test_circular_trading_detected_for_dominant_supplier(self, validator_circular):
-        is_circular, flagged = validator_circular.detect_circular_trading()
+        is_circular, flagged, _ = validator_circular.detect_circular_trading()
         assert is_circular is True, \
             "Should detect circular trading when single supplier has >40% of ITC"
 
     def test_no_circular_trading_in_clean_data(self, validator_clean):
-        is_circular, flagged = validator_clean.detect_circular_trading()
+        is_circular, flagged, _ = validator_clean.detect_circular_trading()
         # Clean data has balanced suppliers — may or may not flag
         assert isinstance(is_circular, bool)
         assert isinstance(flagged, list)
 
     def test_returns_bool_and_list(self, validator_from_files):
-        is_circular, flagged = validator_from_files.detect_circular_trading()
+        is_circular, flagged, graph_data = validator_from_files.detect_circular_trading()
         assert isinstance(is_circular, bool)
         assert isinstance(flagged, list)
         assert len(flagged) <= 5, "Should return at most 5 flagged GSTINs"
+        assert isinstance(graph_data, dict)
 
 
 # ─────────────────────────────────────────────────────────────────────────────

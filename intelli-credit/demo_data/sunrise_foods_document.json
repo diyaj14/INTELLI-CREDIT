@@ -24,7 +24,17 @@
     "avg_balance_cr": 4.2,
     "emi_outflow_monthly_cr": 0.65,
     "peak_balance_cr": 9.8,
-    "regular_credits": true
+    "regular_credits": true,
+    "month_on_month_volatility": 0.08,
+    "stress_months_count": 0,
+    "inward_outward_ratio_trend": [
+      1.2,
+      1.3,
+      1.1,
+      1.4,
+      1.2,
+      1.5
+    ]
   },
   "extraction_confidence": 0.95,
   "source_citations": {
@@ -125,5 +135,6 @@
     ]
   },
   "trend_signals": [],
-  "early_warning_signals": []
+  "early_warning_signals": [],
+  "low_confidence_fields": []
 }

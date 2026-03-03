@@ -70,6 +70,22 @@ def _try_import_pdf2image():
         logger.warning("pdf2image not installed. Scanned PDF conversion unavailable.")
         return None
 
+def _try_import_cv2():
+    try:
+        import cv2
+        return cv2
+    except ImportError:
+        logger.warning("cv2 not installed. Image preprocessing unavailable.")
+        return None
+
+def _try_import_numpy():
+    try:
+        import numpy as np
+        return np
+    except ImportError:
+        logger.warning("numpy not installed. Image preprocessing unavailable.")
+        return None
+
 
 # ─────────────────────────────────────────────────────────────────────────────
 # Main Class
@@ -233,6 +249,64 @@ class PDFIngestor:
 
     # ── OCR Extraction (Scanned PDFs) ─────────────────────────────────────────
 
+    def _preprocess_image_for_ocr(self, image_path: str) -> str:
+        """
+        Preprocesses image for OCR using OpenCV to handle skewed, noisy bank/tax documents.
+        Steps: Deskew -> Denoise -> Binarize/Contrast Enhancement.
+        """
+        cv2 = _try_import_cv2()
+        np = _try_import_numpy()
+
+        if cv2 is None or np is None:
+            return image_path
+
+        try:
+            img = cv2.imread(image_path)
+            if img is None:
+                return image_path
+
+            # 1. Grayscale
+            gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+
+            # 2. Deskew (Deskewing Indian stamped documents)
+            thresh = cv2.threshold(gray, 0, 255, cv2.THRESH_BINARY_INV | cv2.THRESH_OTSU)[1]
+            coords = np.column_stack(np.where(thresh > 0))
+            if len(coords) > 0:
+                angle = cv2.minAreaRect(coords)[-1]
+                if angle < -45:
+                    angle = -(90 + angle)
+                else:
+                    angle = -angle
+
+                if abs(angle) > 0.5 and abs(angle) < 45:  # Only deskew if confident
+                    (h, w) = img.shape[:2]
+                    center = (w // 2, h // 2)
+                    M = cv2.getRotationMatrix2D(center, angle, 1.0)
+                    gray = cv2.warpAffine(
+                        gray, M, (w, h),
+                        flags=cv2.INTER_CUBIC,
+                        borderMode=cv2.BORDER_REPLICATE
+                    )
+
+            # 3. Denoise
+            denoised = cv2.fastNlMeansDenoising(gray, None, 10, 7, 21)
+
+            # 4. Enhance contrast / Binarize
+            processed = cv2.adaptiveThreshold(
+                denoised, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C,
+                cv2.THRESH_BINARY, 11, 2
+            )
+
+            processed_path = image_path.replace(".jpg", "_processed.jpg")
+            cv2.imwrite(processed_path, processed)
+            
+            logger.debug(f"Applied OpenCV preprocessing to {image_path}")
+            return processed_path
+
+        except Exception as e:
+            logger.warning(f"OpenCV preprocessing failed: {e}")
+            return image_path
+
     def extract_text_from_scanned_pdf(self, filepath: str) -> dict:
         """
         Extracts text from a scanned (image-based) PDF using PaddleOCR.
@@ -281,7 +355,10 @@ class PDFIngestor:
                 image.save(tmp_path, "JPEG")
 
             try:
-                result = self._ocr_engine.ocr(tmp_path, cls=True)
+                # Preprocess image before OCR
+                final_img_path = self._preprocess_image_for_ocr(tmp_path)
+                
+                result = self._ocr_engine.ocr(final_img_path, cls=True)
                 # result structure: [[[box, (text, confidence)], ...]]
                 lines = []
                 if result and result[0]:
@@ -298,6 +375,8 @@ class PDFIngestor:
             finally:
                 try:
                     os.unlink(tmp_path)
+                    if 'final_img_path' in locals() and final_img_path != tmp_path:
+                        os.unlink(final_img_path)
                 except Exception:
                     pass
 

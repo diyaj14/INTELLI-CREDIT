@@ -69,6 +69,9 @@ APEX_TEXTILES_DOC_REPORT = {
         "emi_outflow_monthly_cr":  0.42,   # Monthly loan outflows
         "peak_balance_cr":         4.10,
         "regular_credits":         True,   # 11/12 months had customer credits
+        "month_on_month_volatility": 0.28, # High volatility
+        "stress_months_count":       3,    # 3 months where outflows > inflows
+        "inward_outward_ratio_trend": [1.1, 0.8, 0.9, 1.2, 0.7, 1.0],
     },
 
     # ── Confidence & Audit Trail ──────────────────────────────────────────
@@ -284,6 +287,9 @@ APEX_TEXTILES_DOC_REPORT = {
             "threshold": "margin < 2%",
         },
     ],
+    
+    # ── Feature 5: Low Confidence Fields ──────────────────────────────────
+    "low_confidence_fields": [],
 }
 
 
@@ -323,6 +329,9 @@ HEALTHY_COMPANY_DOC_REPORT = {
         "emi_outflow_monthly_cr":  0.65,
         "peak_balance_cr":         9.80,
         "regular_credits":         True,
+        "month_on_month_volatility": 0.08, # Low, stable volatility
+        "stress_months_count":       0,
+        "inward_outward_ratio_trend": [1.2, 1.3, 1.1, 1.4, 1.2, 1.5],
     },
 
     "extraction_confidence": 0.95,
@@ -394,6 +403,9 @@ HEALTHY_COMPANY_DOC_REPORT = {
 
     # Healthy company — no early warning signals fired
     "early_warning_signals": [],
+
+    # ── Feature 5: Low Confidence Fields ──────────────────────────────────
+    "low_confidence_fields": [],
 }
 
 

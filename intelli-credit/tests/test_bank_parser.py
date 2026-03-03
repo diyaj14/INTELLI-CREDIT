@@ -316,7 +316,8 @@ class TestParse:
     def test_parse_returns_contract1_keys(self):
         p = BankStatementParser()
         result = p.parse(BANK_CSV)
-        required = {"avg_balance_cr", "emi_outflow_monthly_cr", "peak_balance_cr", "regular_credits"}
+        required = {"avg_balance_cr", "emi_outflow_monthly_cr", "peak_balance_cr", "regular_credits",
+                    "month_on_month_volatility", "stress_months_count", "inward_outward_ratio_trend"}
         missing = required - result.keys()
         assert not missing, f"Missing CONTRACT 1 keys: {missing}"
 
@@ -327,6 +328,9 @@ class TestParse:
         assert isinstance(result["emi_outflow_monthly_cr"], float)
         assert isinstance(result["peak_balance_cr"],        float)
         assert isinstance(result["regular_credits"],        bool)
+        assert isinstance(result["month_on_month_volatility"], float)
+        assert isinstance(result["stress_months_count"],    int)
+        assert isinstance(result["inward_outward_ratio_trend"], list)
 
     def test_parse_avg_balance_positive(self):
         p = BankStatementParser()
@@ -337,3 +341,38 @@ class TestParse:
         p = BankStatementParser()
         result = p.parse(BANK_CSV)
         assert result["regular_credits"] is True
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Tests: analyze_cash_flow_volatility (Feature 6)
+# ─────────────────────────────────────────────────────────────────────────────
+
+class TestAnalyzeCashFlowVolatility:
+
+    def test_returns_required_keys(self, parser_inline):
+        result = parser_inline.analyze_cash_flow_volatility()
+        required = {"month_on_month_volatility", "stress_months_count", "inward_outward_ratio_trend"}
+        missing = required - set(result.keys())
+        assert not missing, f"Missing Volatility keys: {missing}"
+
+    def test_inline_data_volatility(self, parser_inline):
+        result = parser_inline.analyze_cash_flow_volatility()
+        # Inline data has 3,500,000 credit every month (std=0, mean=3,500,000)
+        assert result["month_on_month_volatility"] == 0.0
+        # Inward 3.5M, Outward = 420K + 850K = 1.27M, so ratio is 3.5 / 1.27 = 2.76
+        assert result["stress_months_count"] == 0
+        assert all(r > 2.0 for r in result["inward_outward_ratio_trend"])
+
+    def test_fixture_data_volatility(self, parser_from_file):
+        result = parser_from_file.analyze_cash_flow_volatility()
+        assert isinstance(result["month_on_month_volatility"], float)
+        assert isinstance(result["stress_months_count"], int)
+        assert isinstance(result["inward_outward_ratio_trend"], list)
+
+    def test_empty_df_returns_defaults(self):
+        p = BankStatementParser()
+        p.load_from_dataframe(pd.DataFrame({"date": [], "debit": [], "credit": []}))
+        result = p.analyze_cash_flow_volatility()
+        assert result["month_on_month_volatility"] == 0.0
+        assert result["stress_months_count"] == 0
+        assert result["inward_outward_ratio_trend"] == []

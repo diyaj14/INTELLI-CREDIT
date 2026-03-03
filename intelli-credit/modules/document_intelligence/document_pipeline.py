@@ -272,6 +272,13 @@ def run_pipeline(
     early_warning_signals = ews_gen.generate()
 
     # ── 6. Assemble final DocumentReport ──────────────────────────────────────
+    low_confidence_fields = [
+        k for k, v in source_citations_structured.items()
+        if v.get("confidence", 1.0) < 0.75
+    ]
+    if not source_citations_structured:
+        low_confidence_fields = list(_default_financials().keys())
+
     document_report = {
         "company_name":                   company_name,
         "gstin":                          gstin,
@@ -282,6 +289,7 @@ def run_pipeline(
         "source_citations":               source_citations,              # plain strings (backward compat)
         "source_citations_structured":    source_citations_structured,   # Feature 2: rich objects
         "early_warning_signals":          early_warning_signals,         # Feature 3: RBI EWS
+        "low_confidence_fields":          low_confidence_fields,         # Feature 5: Review flags
         # ── Multi-year trend data (Feature 1) ──
         "multi_year_financials":          multi_year_financials,
         "yoy_changes":                    yoy_changes,
@@ -330,4 +338,7 @@ def _default_bank_statement() -> dict:
         "emi_outflow_monthly_cr": 0.0,
         "peak_balance_cr":        0.0,
         "regular_credits":        False,
+        "month_on_month_volatility": 0.0,
+        "stress_months_count":       0,
+        "inward_outward_ratio_trend": [],
     }

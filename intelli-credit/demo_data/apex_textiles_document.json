@@ -96,7 +96,17 @@
     "avg_balance_cr": 1.8,
     "emi_outflow_monthly_cr": 0.42,
     "peak_balance_cr": 4.1,
-    "regular_credits": true
+    "regular_credits": true,
+    "month_on_month_volatility": 0.28,
+    "stress_months_count": 3,
+    "inward_outward_ratio_trend": [
+      1.1,
+      0.8,
+      0.9,
+      1.2,
+      0.7,
+      1.0
+    ]
   },
   "extraction_confidence": 0.91,
   "source_citations": {
@@ -376,5 +386,6 @@
       "field": "net_profit_cr",
       "threshold": "margin < 2%"
     }
-  ]
+  ],
+  "low_confidence_fields": []
 }

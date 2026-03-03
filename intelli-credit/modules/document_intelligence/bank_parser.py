@@ -9,6 +9,9 @@ Output matches CONTRACT 1 bank_statement dict:
       "emi_outflow_monthly_cr": 0.42,
       "peak_balance_cr":        4.10,
       "regular_credits":        True,
+      "month_on_month_volatility": 0.15,
+      "stress_months_count":    2,
+      "inward_outward_ratio_trend": [1.1, 0.9, 1.05]
   }
 
 Supported formats:
@@ -329,6 +332,61 @@ class BankStatementParser:
         logger.info(f"Regular credits check: {result}")
         return bool(result)
 
+    # ── Feature 6: Cash Flow Volatility ───────────────────────────────────────
+
+    def analyze_cash_flow_volatility(self) -> dict:
+        """
+        Calculates Cash Flow Volatility metrics.
+        Returns:
+            {
+                "month_on_month_volatility": float,
+                "stress_months_count": int,
+                "inward_outward_ratio_trend": list of floats
+            }
+        """
+        default_res = {
+            "month_on_month_volatility": 0.0,
+            "stress_months_count": 0,
+            "inward_outward_ratio_trend": []
+        }
+        if self._df is None or "date" not in self._df.columns or "debit" not in self._df.columns or "credit" not in self._df.columns:
+            return default_res
+
+        df = self._df.dropna(subset=["date"]).copy()
+        if df.empty:
+            return default_res
+
+        df["month"] = df["date"].dt.to_period("M")
+        
+        monthly = df.groupby("month").agg({
+            "credit": "sum",
+            "debit": "sum"
+        }).sort_index()
+
+        if monthly.empty:
+            return default_res
+
+        # Inward/Outward ratio trend (last 6 months)
+        # Handle zero division by setting it to 1.0 or just credit value
+        monthly["ratio"] = np.where(monthly["debit"] > 0, monthly["credit"] / monthly["debit"], 1.0)
+        inward_outward_ratio_trend = [round(float(x), 2) for x in monthly["ratio"].tolist()[-6:]]
+
+        # Stress months (outflows > inflows)
+        stress_months_count = int((monthly["credit"] < monthly["debit"]).sum())
+
+        # MoM Volatility of inflows: std / mean (Coefficient of Variation)
+        mean_cr = monthly["credit"].mean()
+        std_cr = monthly["credit"].std(ddof=0)
+        mom_vol = round(float(std_cr / mean_cr), 4) if mean_cr and mean_cr > 0 else 0.0
+
+        res = {
+            "month_on_month_volatility": mom_vol,
+            "stress_months_count": stress_months_count,
+            "inward_outward_ratio_trend": inward_outward_ratio_trend
+        }
+        logger.info(f"Cash flow volatility: {res}")
+        return res
+
     # ── Main Entry Point ──────────────────────────────────────────────────────
 
     def parse(self, filepath: str) -> dict:
@@ -352,13 +410,17 @@ class BankStatementParser:
         averages = self.compute_averages()
         emi      = self.detect_emi_outflows()
         credits  = self.check_regular_credits()
+        volatility = self.analyze_cash_flow_volatility()
 
         result = {
             "avg_balance_cr":         averages["avg_balance_cr"],
             "emi_outflow_monthly_cr": emi,
             "peak_balance_cr":        averages["peak_balance_cr"],
             "regular_credits":        credits,
+            "month_on_month_volatility": volatility["month_on_month_volatility"],
+            "stress_months_count":       volatility["stress_months_count"],
+            "inward_outward_ratio_trend": volatility["inward_outward_ratio_trend"],
         }
 
-        logger.info(f"Bank parse complete: {result}")
+        logger.info(f"Bank parse complete. Volatility: {volatility['month_on_month_volatility']}")
         return result
