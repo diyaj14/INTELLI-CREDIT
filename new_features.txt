@@ -1,0 +1,98 @@
+Now I have the full picture. Here's my comprehensive assessment of your Module 1 and all the changes you should make:
+
+---
+
+## Module 1 Assessment: What's Strong, What's Missing, What Could Win
+
+Your current Module 1 is genuinely solid — 177 tests, multi-engine extraction, GST fraud suite, bank parser. But for a ₹1 crore hackathon judged by senior bankers, here's exactly what needs to change.
+
+---
+
+### 🔴 Critical Gaps (These will lose you points with judges)
+
+**1. No RAG / Vector Store Layer**
+Your system does regex + LLM fallback, but there's no semantic search over the ingested documents. The master plan explicitly calls for ChromaDB/FAISS with table-aware chunking. Judges will ask: *"How does Module 2's Research Agent query your extracted data?"* Right now, MODULE 2 has no structured way to interrogate what you extracted. You need to output embeddings or a queryable vector store, not just JSON.
+
+**Action:** After extraction, chunk the document intelligently (by section: Balance Sheet, P&L, Notes to Accounts) and embed them into ChromaDB. This becomes the "knowledge base" Module 2 and 3 query.
+
+---
+
+**2. No OpenCV / Image Preprocessing**
+Your master plan lists OpenCV for deskewing and denoising scanned PDFs. Right now you rely on PaddleOCR's built-in handling. Real Indian CA documents come in at wrong angles, with coffee stains, stamped "CONFIDENTIAL" in red across tables. Add a preprocessing step before OCR: deskew → denoise → enhance contrast → then pass to PaddleOCR. This directly answers Judge Question #1 from the master plan.
+
+**Action:** Add `pdf2image` + OpenCV preprocessing pipeline before PaddleOCR. Show judges the "before/after" scan quality improvement in your demo.
+
+---
+
+**3. Confidence Score Not Surfaced to Frontend**
+You compute a weighted confidence score (0–1) but the master plan explicitly says to show this to the Credit Officer as *"Extracted with 94% confidence"* and allow manual correction. Right now this score likely sits in your JSON output without a frontend hook. Module 3 (scoring) should penalize low-confidence extractions.
+
+**Action:** Add a `low_confidence_fields` list to your CONTRACT 1 output. Any field extracted below 0.75 confidence should be flagged for human review. This directly powers the "editable extracted values" feature the frontend needs.
+
+---
+
+**4. Missing: Multi-Year Trend Analysis**
+Your ratio computation engine computes ratios for one period. Judges from banking backgrounds will immediately ask: *"Is DSCR improving or deteriorating over 3 years?"* Trend detection (3-year declining revenue, deteriorating current ratio) is the core of RBI's Early Warning Signal framework.
+
+**Action:** Modify `financial_extractor.py` to extract FY22, FY23, FY24 values side-by-side (most annual reports have 2-year comparatives). Compute YoY % change for each ratio. Output a `trend_signals` array to CONTRACT 1. This directly feeds WOW FACTOR #4 (EWS Dashboard).
+
+---
+
+**5. ITR Documents Not Supported**
+The problem statement explicitly lists ITRs as structured data. Your classifier handles Annual Reports, GSTR-3B, GSTR-2A, and Bank Statements — but not ITR (Income Tax Returns). Banks always cross-check ITR-declared income vs P&L vs GST turnover. This triangulation is a high-value signal.
+
+**Action:** Add ITR document type to your classifier. At minimum extract: PAN, assessed income, tax paid, and turnover declared. The cross-validation with GST and P&L is a powerful fraud signal.
+
+---
+
+### 🟡 Important Improvements (Will separate you from other teams)
+
+**6. Circular Trading Graph: Make it Richer**
+You generate graph nodes/edges — good. But right now it's likely just data. The master plan calls for `networkx` visualization. Ensure your output schema includes enough metadata (transaction dates, amounts, entity CINs) so Module 3/Frontend can render a proper network graph. Add a `circular_trading_risk_score` (0–100) derived from the graph structure.
+
+**7. Bank Statement: Add Cash Flow Volatility**
+You compute average/peak/min balances. Add: **month-on-month volatility**, **number of months with balance < 10% of average** (liquidity stress signal), and **inward:outward ratio trend**. These are RBI Level 1 EWS signals and will impress banker judges.
+
+**8. Source Citation in CONTRACT 1**
+Your statement-aware citations are a "WOW factor" feature. Make sure every extracted value in CONTRACT 1 includes: `{"value": 42.3, "unit": "Cr", "source_page": 4, "source_statement": "P&L", "confidence": 0.94}`. This is what makes WOW FACTOR #3 (explainable rejection with citations) possible. Right now it's unclear if every field carries its provenance.
+
+**9. Unstructured.io for Word/Board Minutes**
+The problem statement mentions board meeting minutes and sanction letters. Your current pipeline only handles PDFs and CSVs. The master plan lists `Unstructured.io` for mixed-format documents. Add this as a document type — even basic keyword extraction from board minutes (looking for terms like "loan restructuring", "litigation", "director resignation") adds a signal no other team will have.
+
+---
+
+### 🟢 Quick Wins for Demo Day
+
+**10. Add a `demo_mode` Flag to Your Pipeline**
+Your system should have a `--demo` flag that loads pre-cached Apex Textiles results and skips actual parsing. This ensures the demo never crashes on stage. Your master plan mentions this — make sure it's in Module 1 too, not just the frontend.
+
+**11. Export a `contract1_summary.json` Alongside Full Output**
+Module 3 needs a dense summary for scoring, not 500 lines of raw extraction. Add a condensed summary export: just the 12–15 most critical fields (DSCR, Current Ratio, GST mismatch %, avg balance, revenue trend, confidence score). This makes integration with teammates seamless.
+
+**12. Add `early_warning_signals` Array to CONTRACT 1**
+Based on your extracted data, populate an EWS array before handing off. Example:
+```json
+"early_warning_signals": [
+  {"level": 2, "signal": "GST ITC mismatch 18.2% > 15% threshold", "category": "fraud_risk"},
+  {"level": 1, "signal": "Current ratio 1.1, declining from 1.4 (FY22)", "category": "liquidity"}
+]
+```
+This is pure Module 1 data — you have everything needed to generate it. And it directly powers WOW FACTOR #4 without any other module needing to recompute it.
+
+---
+
+### Priority Order Given Your March 10 Deadline
+
+| Priority | Change | Time Needed |
+|---|---|---|
+| 🔴 Must | Multi-year trend + YoY ratios | 4–6 hours |
+| 🔴 Must | Source citations on every field | 3–4 hours |
+| 🔴 Must | `early_warning_signals` array in CONTRACT 1 | 2–3 hours |
+| 🔴 Must | Demo mode flag | 1 hour |
+| 🟡 High | OpenCV preprocessing before OCR | 4–5 hours |
+| 🟡 High | `low_confidence_fields` for frontend | 2 hours |
+| 🟡 High | ChromaDB embedding output | 4–6 hours |
+| 🟢 Nice | ITR document type | 4 hours |
+| 🟢 Nice | Unstructured.io for board minutes | 3 hours |
+
+The three 🔴 Must changes are entirely within your existing codebase and dramatically strengthen what you hand off to Modules 2 and 3. Do those first. The trend analysis + EWS signals will genuinely impress banker judges because it references the RBI EWS framework directly — most teams won't touch that.
