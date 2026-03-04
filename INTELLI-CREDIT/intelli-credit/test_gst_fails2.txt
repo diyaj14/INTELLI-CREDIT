@@ -1,0 +1,54 @@
+============================= test session starts =============================
+platform win32 -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- E:\iithyderabad\intelli-credit\.venv\Scripts\python.exe
+cachedir: .pytest_cache
+rootdir: E:\iithyderabad\intelli-credit
+plugins: anyio-4.12.1, cov-7.0.0
+collecting ... collected 37 items
+
+tests/test_gst_validator.py::TestFileLoading::test_load_gstr3b_from_csv PASSED [  2%]
+tests/test_gst_validator.py::TestFileLoading::test_load_gstr2a_from_csv PASSED [  5%]
+tests/test_gst_validator.py::TestFileLoading::test_itc_claimed_is_numeric PASSED [  8%]
+tests/test_gst_validator.py::TestFileLoading::test_missing_period_column_raises PASSED [ 10%]
+tests/test_gst_validator.py::TestComputeMismatchPct::test_mismatch_pct_approximately_18 PASSED [ 13%]
+tests/test_gst_validator.py::TestComputeMismatchPct::test_mismatch_triggers_red_flag PASSED [ 16%]
+tests/test_gst_validator.py::TestComputeMismatchPct::test_clean_data_gives_low_mismatch PASSED [ 18%]
+tests/test_gst_validator.py::TestComputeMismatchPct::test_mismatch_detail_has_period_keys PASSED [ 21%]
+tests/test_gst_validator.py::TestComputeMismatchPct::test_mismatch_is_non_negative PASSED [ 24%]
+tests/test_gst_validator.py::TestComputeMismatchPct::test_no_data_raises PASSED [ 27%]
+tests/test_gst_validator.py::TestDetectCircularTrading::test_circular_trading_detected_for_dominant_supplier FAILED [ 29%]
+tests/test_gst_validator.py::TestDetectCircularTrading::test_no_circular_trading_in_clean_data PASSED [ 32%]
+tests/test_gst_validator.py::TestDetectCircularTrading::test_returns_bool_and_list PASSED [ 35%]
+tests/test_gst_validator.py::TestDetectRevenueInflation::test_no_inflation_when_bank_roughly_matches PASSED [ 37%]
+tests/test_gst_validator.py::TestDetectRevenueInflation::test_inflation_detected_when_bank_much_lower PASSED [ 40%]
+tests/test_gst_validator.py::TestDetectRevenueInflation::test_no_inflation_on_zero_bank_credits PASSED [ 43%]
+tests/test_gst_validator.py::TestClassifyFlag::test_flag_thresholds[2.0-GREEN] PASSED [ 45%]
+tests/test_gst_validator.py::TestClassifyFlag::test_flag_thresholds[4.9-GREEN] PASSED [ 48%]
+tests/test_gst_validator.py::TestClassifyFlag::test_flag_thresholds[5.0-YELLOW] PASSED [ 51%]
+tests/test_gst_validator.py::TestClassifyFlag::test_flag_thresholds[9.9-YELLOW] PASSED [ 54%]
+tests/test_gst_validator.py::TestClassifyFlag::test_flag_thresholds[10.0-YELLOW] PASSED [ 56%]
+tests/test_gst_validator.py::TestClassifyFlag::test_flag_thresholds[10.1-RED] PASSED [ 59%]
+tests/test_gst_validator.py::TestClassifyFlag::test_flag_thresholds[18.2-RED] PASSED [ 62%]
+tests/test_gst_validator.py::TestClassifyFlag::test_flag_thresholds[50.0-RED] PASSED [ 64%]
+tests/test_gst_validator.py::TestGSTScore::test_green_no_extras_gives_20 PASSED [ 67%]
+tests/test_gst_validator.py::TestGSTScore::test_yellow_no_extras_gives_14 PASSED [ 70%]
+tests/test_gst_validator.py::TestGSTScore::test_red_no_extras_gives_8 PASSED [ 72%]
+tests/test_gst_validator.py::TestGSTScore::test_red_plus_circular_deducts_4 PASSED [ 75%]
+tests/test_gst_validator.py::TestGSTScore::test_red_plus_both_flags_minimum_zero PASSED [ 78%]
+tests/test_gst_validator.py::TestGSTScore::test_score_never_negative PASSED [ 81%]
+tests/test_gst_validator.py::TestValidate::test_validate_returns_all_contract1_keys PASSED [ 83%]
+tests/test_gst_validator.py::TestValidate::test_validate_mismatch_flag_is_red PASSED [ 86%]
+tests/test_gst_validator.py::TestValidate::test_validate_gst_score_in_range PASSED [ 89%]
+tests/test_gst_validator.py::TestValidate::test_validate_apex_textiles_score_8_or_less PASSED [ 91%]
+tests/test_gst_validator.py::TestValidate::test_validate_clean_scenario_gives_high_score PASSED [ 94%]
+tests/test_gst_validator.py::TestValidate::test_validate_without_loading_raises PASSED [ 97%]
+tests/test_gst_validator.py::TestValidate::test_validate_extended_fields_present PASSED [100%]
+
+================================== FAILURES ===================================
+_ TestDetectCircularTrading.test_circular_trading_detected_for_dominant_supplier _
+tests\test_gst_validator.py:190: in test_circular_trading_detected_for_dominant_supplier
+    assert is_circular is True, \
+E   AssertionError: Should detect circular trading when single supplier has >40% of ITC
+E   assert False is True
+=========================== short test summary info ===========================
+FAILED tests/test_gst_validator.py::TestDetectCircularTrading::test_circular_trading_detected_for_dominant_supplier
+======================== 1 failed, 36 passed in 1.30s =========================

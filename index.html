@@ -1,0 +1,736 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Intelli-Credit | Enterprise Risk Intelligence</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <style>
+        :root {
+            --primary: #6366f1;
+            --primary-glow: rgba(99, 102, 241, 0.5);
+            --secondary: #a855f7;
+            --bg: #0f172a;
+            --card-bg: rgba(30, 41, 59, 0.7);
+            --border: rgba(255, 255, 255, 0.1);
+            --text: #f8fafc;
+            --text-muted: #94a3b8;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Outfit', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg);
+            background-image:
+                radial-gradient(at 0% 0%, rgba(99, 102, 241, 0.15) 0px, transparent 50%),
+                radial-gradient(at 100% 0%, rgba(168, 85, 247, 0.15) 0px, transparent 50%);
+            color: var(--text);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+        }
+
+        header {
+            padding: 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+            width: 100%;
+        }
+
+        .hero {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            letter-spacing: -1px;
+        }
+
+        .hero p {
+            color: var(--text-muted);
+            font-size: 1.2rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 1.5rem;
+            padding: 2rem;
+            backdrop-filter: blur(20px);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            transition: transform 0.3s ease, border-color 0.3s ease;
+        }
+
+        .input-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        label {
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        input {
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid var(--border);
+            border-radius: 0.75rem;
+            padding: 1rem;
+            color: white;
+            font-size: 1rem;
+            transition: all 0.2s;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px var(--primary-glow);
+        }
+
+        .upload-area {
+            border: 2px dashed var(--border);
+            border-radius: 1.5rem;
+            padding: 3rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            background: rgba(255, 255, 255, 0.02);
+            margin-bottom: 2rem;
+        }
+
+        .upload-area:hover,
+        .upload-area.dragging {
+            border-color: var(--primary);
+            background: rgba(99, 102, 241, 0.05);
+        }
+
+        .upload-area i {
+            font-size: 3rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+
+        .file-list {
+            margin-top: 1rem;
+            text-align: left;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .file-tag {
+            background: rgba(99, 102, 241, 0.1);
+            border: 1px solid var(--primary);
+            padding: 0.25rem 0.75rem;
+            border-radius: 2rem;
+            font-size: 0.8rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        button.btn-primary {
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            border: none;
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 1rem;
+            font-weight: 700;
+            font-size: 1.1rem;
+            cursor: pointer;
+            width: 100%;
+            transition: all 0.3s;
+            box-shadow: 0 10px 15px -3px rgba(99, 102, 241, 0.4);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        button.btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 20px 25px -5px rgba(99, 102, 241, 0.5);
+        }
+
+        button.btn-primary:active {
+            transform: translateY(0);
+        }
+
+        #results {
+            display: none;
+            margin-top: 3rem;
+            animation: fadeInUp 0.5s ease-out;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .result-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .data-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border);
+            border-radius: 1.25rem;
+            padding: 1.5rem;
+        }
+
+        .data-card h3 {
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        .metric {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.75rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .metric:last-child {
+            border-bottom: none;
+        }
+
+        .metric-label {
+            color: var(--text-muted);
+        }
+
+        .metric-value {
+            font-weight: 700;
+        }
+
+        .badge {
+            padding: 0.2rem 0.6rem;
+            border-radius: 0.5rem;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .badge-green {
+            background: rgba(16, 185, 129, 0.2);
+            color: #10b981;
+        }
+
+        .badge-amber {
+            background: rgba(245, 158, 11, 0.2);
+            color: #f59e0b;
+        }
+
+        .badge-red {
+            background: rgba(239, 68, 68, 0.2);
+            color: #ef4444;
+        }
+
+        .agent-synthesis {
+            grid-column: 1 / -1;
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(168, 85, 247, 0.1));
+            border: 1px solid rgba(99, 102, 241, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .agent-synthesis::before {
+            content: 'f0eb';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            position: absolute;
+            right: -20px;
+            bottom: -20px;
+            font-size: 10rem;
+            opacity: 0.05;
+            color: var(--primary);
+        }
+
+        .narrative {
+            line-height: 1.6;
+            color: #d1d5db;
+            font-size: 1.05rem;
+            white-space: pre-wrap;
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 4rem;
+        }
+
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid rgba(255, 255, 255, 0.1);
+            border-top-color: var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1.5rem;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .step-indicator {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .step {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--card-bg);
+            border: 2px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            color: var(--text-muted);
+            transition: all 0.3s;
+        }
+
+        .step.active {
+            background: var(--primary);
+            border-color: var(--primary);
+            color: white;
+            box-shadow: 0 0 15px var(--primary-glow);
+        }
+
+        .step.done {
+            background: var(--success);
+            border-color: var(--success);
+            color: white;
+        }
+
+        .news-item {
+            padding: 0.75rem 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .news-title {
+            font-weight: 600;
+            font-size: 0.95rem;
+            margin-bottom: 0.25rem;
+            display: block;
+        }
+
+        .news-meta {
+            display: flex;
+            gap: 1rem;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        .ews-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .ews-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem;
+            border-radius: 0.75rem;
+            background: rgba(0, 0, 0, 0.2);
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div class="logo">
+            <i class="fas fa-microchip"></i>
+            INTELLI-CREDIT
+        </div>
+        <div class="header-actions">
+            <span id="timestamp" style="font-size: 0.8rem; color: var(--text-muted)"></span>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="hero">
+            <h1>Advanced Risk Intelligence</h1>
+            <p>Module 1 & 2 Fusion: Document Extraction + Agentic Market Research</p>
+        </div>
+
+        <div class="card" id="input-card">
+            <div class="step-indicator">
+                <div class="step active" id="step-1">1</div>
+                <div class="step" id="step-2">2</div>
+                <div class="step" id="step-3">3</div>
+            </div>
+
+            <div id="upload-section">
+                <div class="upload-area" id="drop-zone">
+                    <input type="file" id="file-input" multiple hidden>
+                    <i class="fas fa-cloud-upload-alt"></i>
+                    <h2>Upload Corporate Documents</h2>
+                    <p>Financial Reports, GSTR-3B/2A, or Bank Statements (PDF/Excel/CSV)</p>
+                    <div class="file-list" id="selected-files"></div>
+                </div>
+
+                <div class="input-grid">
+                    <div class="input-group">
+                        <label>Company Name</label>
+                        <input type="text" id="company-name" placeholder="e.g. Apex Textiles Pvt Ltd">
+                    </div>
+                    <div class="input-group">
+                        <label>GSTIN (Optional)</label>
+                        <input type="text" id="gstin" placeholder="15-digit GST Number">
+                    </div>
+                    <div class="input-group">
+                        <label>Promoters</label>
+                        <input type="text" id="promoters" placeholder="Name, Name (Comma separated)">
+                    </div>
+                    <div class="input-group" style="grid-column: 1 / -1;">
+                        <label>Credit Officer Notes (Primary Insight)</label>
+                        <input type="text" id="primary-insight"
+                            placeholder="e.g. Factory found operating at 40% capacity, machinery looks outdated">
+                    </div>
+                </div>
+
+                <button class="btn-primary" id="analyze-btn">
+                    <span>RUN INTELLIGENCE PIPELINE</span>
+                    <i class="fas fa-bolt"></i>
+                </button>
+
+                <p style="text-align: center; margin-top: 1rem; font-size: 0.9rem; color: var(--text-muted);">
+                    <a href="#" id="try-demo" style="color: var(--primary); text-decoration: none;">Or run with Demo
+                        Data (Apex Textiles) →</a>
+                </p>
+            </div>
+        </div>
+
+        <div class="loading" id="loader">
+            <div class="spinner"></div>
+            <h2 id="loading-status">Aggregating Financials...</h2>
+            <p id="loading-subtext">Contacting MCA V3 and scanning News/Litigation databases.</p>
+        </div>
+
+        <div id="results">
+            <div class="result-header"
+                style="margin-bottom: 2rem; display: flex; justify-content: space-between; align-items: flex-end;">
+                <div>
+                    <h2 id="res-company-name" style="font-size: 2rem;">Company Name</h2>
+                    <p id="res-gstin" style="color: var(--text-muted);">GSTIN: ---</p>
+                </div>
+                <div style="text-align: right;">
+                    <div id="res-confidence" class="badge badge-green">94% Confidence</div>
+                    <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 0.5rem;">Orchestrated Synthesis
+                    </p>
+                </div>
+            </div>
+
+            <div class="result-grid">
+                <!-- Module 1: Financial Extraction -->
+                <div class="data-card">
+                    <h3><i class="fas fa-chart-line"></i> Extraction: Module 1</h3>
+                    <div id="financial-metrics">
+                        <!-- Populated by JS -->
+                    </div>
+                </div>
+
+                <!-- Module 1: GST & EWS -->
+                <div class="data-card">
+                    <h3><i class="fas fa-shield-halved"></i> GST & Compliance</h3>
+                    <div id="compliance-metrics">
+                        <!-- Populated by JS -->
+                    </div>
+                    <h3 style="margin-top:1.5rem;"><i class="fas fa-triangle-exclamation"></i> Early Warnings</h3>
+                    <div class="ews_list" id="ews-container">
+                        <!-- Populated by JS -->
+                    </div>
+                </div>
+
+                <!-- Module 2: Market Intelligence -->
+                <div class="data-card">
+                    <h3><i class="fas fa-earth-americas"></i> Research: Module 2</h3>
+                    <div id="research-metrics">
+                        <!-- Populated by JS -->
+                    </div>
+                </div>
+
+                <!-- Module 1+2 Fusion: Agent Narrative -->
+                <div class="data-card agent-synthesis">
+                    <h3 style="color: white; border-bottom: 1px solid rgba(255,255,255,0.2); padding-bottom: 0.5rem;">
+                        <i class="fas fa-robot"></i> CREDIT MANAGER SYNTHESIS (AI)
+                    </h3>
+                    <div class="narrative" id="narrative-text">
+                        Processing final synthesis...
+                    </div>
+                </div>
+            </div>
+
+            <div style="margin-top: 2rem; text-align: center;">
+                <button class="btn-primary" onclick="window.location.reload()"
+                    style="max-width: 300px; margin: 0 auto; background: var(--card-bg); border: 1px solid var(--border);">
+                    NEW ANALYSIS
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const dropZone = document.getElementById('drop-zone');
+        const fileInput = document.getElementById('file-input');
+        const selectedFilesDiv = document.getElementById('selected-files');
+        const analyzeBtn = document.getElementById('analyze-btn');
+        const inputCard = document.getElementById('input-card');
+        const loader = document.getElementById('loader');
+        const results = document.getElementById('results');
+        const tryDemo = document.getElementById('try-demo');
+
+        let selectedFiles = [];
+
+        // File handling
+        dropZone.onclick = () => fileInput.click();
+
+        fileInput.onchange = (e) => {
+            handleFiles(e.target.files);
+        };
+
+        dropZone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            dropZone.classList.add('dragging');
+        });
+
+        dropZone.addEventListener('dragleave', () => {
+            dropZone.classList.remove('dragging');
+        });
+
+        dropZone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            dropZone.classList.remove('dragging');
+            handleFiles(e.dataTransfer.files);
+        });
+
+        function handleFiles(files) {
+            selectedFiles = [...selectedFiles, ...Array.from(files)];
+            updateFileList();
+        }
+
+        function updateFileList() {
+            selectedFilesDiv.innerHTML = selectedFiles.map((f, i) => `
+                <div class="file-tag">
+                    <i class="far fa-file-alt"></i>
+                    ${f.name}
+                    <i class="fas fa-times" onclick="removeFile(${i});" style="cursor:pointer"></i>
+                </div>
+            `).join('');
+        }
+
+        window.removeFile = (index) => {
+            selectedFiles.splice(index, 1);
+            updateFileList();
+        };
+
+        // Analysis
+        analyzeBtn.onclick = () => startAnalysis();
+        tryDemo.onclick = (e) => {
+            e.preventDefault();
+            startAnalysis(true);
+        };
+
+        async function startAnalysis(isDemo = false) {
+            const formData = new FormData();
+
+            if (!isDemo) {
+                selectedFiles.forEach(f => formData.append('files', f));
+                formData.append('company_name', document.getElementById('company-name').value);
+                formData.append('gstin', document.getElementById('gstin').value);
+                formData.append('promoter_names', document.getElementById('promoters').value);
+                formData.append('primary_insights', document.getElementById('primary-insight').value);
+                formData.append('demo_mode', false);
+            } else {
+                formData.append('demo_mode', true);
+            }
+
+            inputCard.style.display = 'none';
+            loader.style.display = 'block';
+
+            // Loading steps animation
+            const statuses = [
+                "Classifying Documents...",
+                "Running PaddleOCR on Financials...",
+                "Cross-validating GSTR-2A vs 3B...",
+                "Searching MCA V3 Database...",
+                "Aggregating Judicial Records...",
+                "Web Intelligence Scan...",
+                "Agentic Risk Synthesis..."
+            ];
+
+            let statusIdx = 0;
+            const interval = setInterval(() => {
+                if (statusIdx < statuses.length - 1) {
+                    statusIdx++;
+                    document.getElementById('loading-status').innerText = statuses[statusIdx];
+                }
+            }, 3000);
+
+            try {
+                const response = await fetch('/analyze', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const data = await response.json();
+                clearInterval(interval);
+                displayResults(data);
+            } catch (err) {
+                alert("Error during analysis: " + err.message);
+                inputCard.style.display = 'block';
+                loader.style.display = 'none';
+                clearInterval(interval);
+            }
+        }
+
+        function displayResults(data) {
+            loader.style.display = 'none';
+            results.style.display = 'block';
+
+            const m1 = data.document_intelligence;
+            const m2 = data.research_agent;
+
+            document.getElementById('res-company-name').innerText = m1.company_name;
+            document.getElementById('res-gstin').innerText = m1.gstin ? `GSTIN: ${m1.gstin}` : 'GSTIN: Not Extracted';
+
+            const conf = Math.round(m1.extraction_confidence * 100);
+            const confBadge = document.getElementById('res-confidence');
+            confBadge.innerText = `${conf}% Confidence`;
+            if (conf < 50) confBadge.className = 'badge badge-red';
+            else if (conf < 80) confBadge.className = 'badge badge-amber';
+            else confBadge.className = 'badge badge-green';
+
+            // Financials
+            const fin = m1.financials || {};
+            document.getElementById('financial-metrics').innerHTML = `
+                <div class="metric"><span class="metric-label">Revenue</span><span class="metric-value">&#8377;${fin.revenue_cr || 0} Cr</span></div>
+                <div class="metric"><span class="metric-label">EBITDA</span><span class="metric-value">&#8377;${fin.ebitda_cr || 0} Cr</span></div>
+                <div class="metric"><span class="metric-label">Net Profit</span><span class="metric-value">&#8377;${fin.net_profit_cr || 0} Cr</span></div>
+                <div class="metric"><span class="metric-label">Debt/Equity</span><span class="metric-value">${fin.debt_to_equity || 0}</span></div>
+                <div class="metric"><span class="metric-label">Current Ratio</span><span class="metric-value">${fin.current_ratio || 0}</span></div>
+            `;
+
+            // Compliance
+            const gst = m1.gst_analysis;
+            document.getElementById('compliance-metrics').innerHTML = `
+                <div class="metric"><span class="metric-label">GST Mismatch</span><span class="badge ${gst.mismatch_flag == 'RED' ? 'badge-red' : 'badge-green'}">${gst.mismatch_pct}%</span></div>
+                <div class="metric"><span class="metric-label">Circular Trading</span><span class="badge ${gst.circular_trading_flag ? 'badge-red' : 'badge-green'}">${gst.circular_trading_flag ? 'DETECTED' : 'CLEAR'}</span></div>
+                <div class="metric"><span class="metric-label">Extracted GST Score</span><span class="metric-value">${gst.gst_score}/20</span></div>
+            `;
+
+            // Qualitative Risks (Pillar 1)
+            const risks = m1.qualitative_risks || [];
+            document.getElementById('compliance-metrics').innerHTML += `
+                <div style="margin-top:1rem; padding-top:1rem; border-top:1px solid var(--border);">
+                    <div class="metric-label" style="margin-bottom:0.5rem">Unstructured Risks (Pillar 1):</div>
+                    ${risks.length > 0 ? risks.map(r => `<div style="font-size:0.75rem; color:var(--danger); margin-bottom:4px;"><i class="fas fa-exclamation-triangle"></i> ${r}</div>`).join('') : '<div style="font-size:0.75rem; color:var(--success);">No legal/sanction risks detected.</div>'}
+                </div>
+            `;
+
+            // EWS
+            const ews = m1.early_warning_signals || [];
+            document.getElementById('ews-container').innerHTML = ews.map(e => `
+                <div class="ews-item" style="border-left: 4px solid ${e.level == 3 ? 'var(--danger)' : e.level == 2 ? 'var(--warning)' : 'var(--success)'}">
+                    <div style="flex:1">
+                        <div style="font-weight:700; font-size:0.85rem">${e.category?.toUpperCase()?.replace('_', ' ') || 'ALERT'}</div>
+                        <div style="font-size:0.75rem; color:var(--text-muted)">${e.signal}</div>
+                    </div>
+                </div>
+            `).join('') || '<p style="color:var(--text-muted)">No major warning signals detected.</p>';
+
+            // Research
+            const res = m2;
+            document.getElementById('research-metrics').innerHTML = `
+                <div class="metric"><span class="metric-label">MCA Status</span><span class="badge badge-green">${res.mca_data?.status || 'Active'}</span></div>
+                <div class="metric"><span class="metric-label">Litigation Cases</span><span class="badge ${res.litigation?.found ? 'badge-red' : 'badge-green'}">${res.litigation?.cases?.length || 0} Found</span></div>
+                <div class="metric" style="flex-direction:column; align-items:flex-start; gap:0.5rem; border:none; margin-top:1rem;">
+                    <span class="metric-label">Source Citations (Module 1):</span>
+                    <div style="font-size:0.75rem; color:var(--text-muted); max-height:150px; overflow-y:auto; width:100%; padding-right:5px;">
+                        ${Object.entries(m1.source_citations || {}).map(([k, v]) => `<div style="margin-bottom:4px;"><b>${k}:</b> ${v}</div>`).join('')}
+                    </div>
+                </div>
+            `;
+
+            // Narrative (Using marked.js for proper formatting)
+            document.getElementById('narrative-text').innerHTML = marked.parse(m2.agent_summary || "Agentic synthesis failed to generate narrative.");
+        }
+
+        document.getElementById('timestamp').innerText = new Date().toLocaleString();
+    </script>
+</body>
+
+</html>
