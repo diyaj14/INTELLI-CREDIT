@@ -1,0 +1,438 @@
+# 🏦 INTELLI-CREDIT — TEAM MODULARIZATION PLAN
+**Hackathon:** IIT Hyderabad | **Deadline:** 10 March 2026 (EOD)
+**Goal:** Each person builds their module independently. On Day 5 and Day 8 we integrate.
+
+---
+
+## 🗂️ Module Overview
+
+| Module | Owner | Days | Deliverable |
+|--------|-------|------|-------------|
+| **M1 — Document Intelligence** | Person 1 | Days 1–6 | `DocumentReport` dict |
+| **M2 — Research Agent** | Person 2 | Days 1–6 | `ResearchReport` dict |
+| **M3 — Scoring & Explainability** | Person 3 | Days 1–6 | `ScoringResult` dict + CAM doc |
+| **M4 — Frontend Portal** | Person 4 | Days 1–8 | Streamlit app (`app.py`) |
+
+> **Rule:** Every module consumes and produces a **Python dict with a fixed schema** (the contract below). If your upstream module isn't ready, use the mock data provided. This means you are NEVER blocked.
+
+---
+
+## 📦 The Data Contracts (How Modules Talk to Each Other)
+
+### Contract 1 — `DocumentReport` (output of M1, input to M3 & M4)
+
+```python
+document_report = {
+    "company_name": "Apex Textiles Pvt Ltd",
+    "gstin": "27AAPCA1234F1Z5",
+    "financials": {
+        "revenue_cr": 42.5,            # ₹ Crore
+        "ebitda_cr": 6.1,
+        "net_profit_cr": 2.3,
+        "total_assets_cr": 38.0,
+        "total_liabilities_cr": 24.0,
+        "net_worth_cr": 14.0,
+        "dscr": 0.89,                  # Debt Service Coverage Ratio
+        "current_ratio": 1.1,
+        "debt_to_equity": 1.71,
+        "interest_coverage": 2.4,
+    },
+    "gst_analysis": {
+        "mismatch_pct": 18.2,          # GSTR-3B vs GSTR-2A gap
+        "mismatch_flag": "RED",        # RED / YELLOW / GREEN
+        "circular_trading_flag": True,
+        "revenue_inflation_flag": False,
+        "gst_score": 12,               # out of 20
+    },
+    "bank_statement": {
+        "avg_balance_cr": 1.8,
+        "emi_outflow_monthly_cr": 0.42,
+        "peak_balance_cr": 4.1,
+        "regular_credits": True,
+    },
+    "extraction_confidence": 0.91,     # 0–1, flag if < 0.75
+    "source_citations": {
+        "revenue": "P&L Statement FY2024, Page 3, Line 7",
+        "dscr":    "Balance Sheet FY2024, Page 8",
+    }
+}
+```
+
+---
+
+### Contract 2 — `ResearchReport` (output of M2, input to M3 & M4)
+
+```python
+research_report = {
+    "company_name": "Apex Textiles Pvt Ltd",
+    "mca_data": {
+        "cin": "U17200MH2010PTC123456",
+        "status": "Active",
+        "incorporation_date": "2010-04-15",
+        "paid_up_capital_cr": 5.0,
+        "directors": [
+            {"name": "Ramesh Gupta", "din": "00123456", "other_companies": 3}
+        ],
+        "charges_outstanding": 2,      # existing bank liens on assets
+        "struck_off_subsidiaries": 1,
+    },
+    "litigation": {
+        "found": True,
+        "cases": [
+            {
+                "case_id": "2023/NC/142",
+                "court": "NCLT Mumbai",
+                "parties": "Apex Textiles vs HDFC Bank",
+                "status": "Dismissed",
+                "source": "eCourts Portal, retrieved 01 Mar 2026"
+            }
+        ],
+        "litigation_score_deduction": 15,
+    },
+    "news_sentiment": {
+        "score": -0.3,                 # -1 (very bad) to +1 (very good)
+        "headlines": [
+            "Apex Textiles faces supplier payment delays — Economic Times, Jan 2026"
+        ],
+    },
+    "sector_headwinds": "Textile sector NPA at 7.2% (RBI, Q3 FY2024)",
+    "promoter_score": 9,               # out of 20
+    "research_timestamp": "2026-03-01T14:32:00",
+}
+```
+
+---
+
+### Contract 3 — `ScoringResult` (output of M3, input to M4)
+
+```python
+scoring_result = {
+    "total_score": 54,                 # out of 100
+    "decision": "LEND WITH CONDITIONS",  # LEND / LEND WITH CONDITIONS / REJECT
+    "components": {
+        "financial_health":  22,       # max 35
+        "gst_compliance":    12,       # max 20
+        "promoter_quality":   9,       # max 20
+        "external_intel":     8,       # max 15
+        "officer_override":   3,       # max 10 (entered via UI)
+    },
+    "loan_terms": {
+        "requested_cr": 15.0,
+        "recommended_cr": 8.0,
+        "interest_rate_pct": 11.5,     # base + risk premium
+        "tenure_months": 36,
+        "conditions": ["Review in 6 months", "Quarterly GST audit required"],
+    },
+    "explanation_narrative": (
+        "Apex Textiles Pvt Ltd presents a MEDIUM-HIGH risk profile. "
+        "The DSCR of 0.89 falls below the RBI threshold of 1.25 (Financial Health: -13 pts). "
+        "An 18.2% GST mismatch signals potential ITC discrepancy (GST: -8 pts). "
+        "NCLT litigation, though dismissed, indicates promoter risk (-15 pts). "
+        "Recommend reduced sanction of ₹8 Cr at prime+2.5% with 6-month review."
+    ),
+    "shap_contributions": {            # for the waterfall chart
+        "dscr":              -13,
+        "gst_mismatch":       -8,
+        "litigation":        -15,
+        "avg_bank_balance":   +7,
+        "news_sentiment":     -4,
+    },
+    "ews_signals": [
+        {"level": 2, "label": "Special Mention", "reason": "GST mismatch > 15% — potential ITC fraud"},
+        {"level": 1, "label": "Watch",           "reason": "Litigation history found — NCLT case"},
+    ],
+    "cam_path": "output/Apex_Textiles_CAM.docx",
+}
+```
+
+---
+
+## 👨‍💻 Module 1 — Document Intelligence (Person 1)
+
+**What you own:** Everything from PDF/Excel upload → structured `DocumentReport`
+
+### Files to Create
+```
+intelli-credit/
+  modules/
+    document_intelligence/
+      pdf_ingestor.py       # text + OCR extraction
+      financial_extractor.py # ratio computation
+      gst_validator.py      # GSTR mismatch + circular trading
+      bank_parser.py        # bank statement analysis
+      document_pipeline.py  # orchestrates all above, returns DocumentReport
+      mock_data.py          # DocumentReport mock for other teams
+```
+
+### Day-by-Day Tasks
+
+| Day | Task |
+|-----|------|
+| 1–2 | Set up venv. Install: `pdfplumber camelot-py paddleocr pdf2image unstructured opencv-python pandas` |
+| 3 | Build `PDFIngestor`: text extraction (pdfplumber) + OCR fallback (PaddleOCR) |
+| 3 | Build `FinancialExtractor`: regex + LLM fallback to extract all fields in `DocumentReport.financials` |
+| 4 | Build `GSTCrossValidator`: GSTR-3B vs GSTR-2A mismatch, circular trading, revenue inflation |
+| 4 | Build `BankStatementParser`: CSV → categorized transaction summary |
+| 5 | Write `mock_data.py` — a hardcoded `DocumentReport` dict for the demo company Apex Textiles |
+| 5 | **Integration Day:** expose `run_pipeline(files: list) -> dict` and test with M3 team |
+| 6 | Polish: confidence scoring, source citations, edge case handling |
+
+### Key Interface
+```python
+# document_pipeline.py
+def run_pipeline(uploaded_files: list[str], company_name: str) -> dict:
+    """Returns DocumentReport dict"""
+```
+
+---
+
+## 🔍 Module 2 — Research Agent (Person 2)
+
+**What you own:** Company name → web research → structured `ResearchReport`
+
+### Files to Create
+```
+intelli-credit/
+  modules/
+    research_agent/
+      mca_scraper.py        # scrape mca.gov.in
+      ecourt_searcher.py    # search ecourts.gov.in
+      news_aggregator.py    # Tavily + NewsAPI
+      research_agent.py     # LangChain ReAct agent orchestrator
+      research_pipeline.py  # single entry point → ResearchReport
+      mock_data.py          # ResearchReport mock for other teams
+```
+
+### Day-by-Day Tasks
+
+| Day | Task |
+|-----|------|
+| 1 | Create Tavily API account (free). Create NewsAPI account (free). |
+| 2 | Study mca.gov.in interface manually — understand the search flow |
+| 3 | Build `MCAScraper`: `lookup(company_name) -> mca_data dict` using requests + BeautifulSoup |
+| 3–4 | Build `ECourtSearcher`: `search(person_name) -> litigation list` |
+| 4 | Build `NewsAggregator`: Tavily + RSS feed pull → summarised news items |
+| 5 | Build `ResearchAgent` using LangChain `AgentExecutor` with 4 tools (MCA, eCourts, news, web_search) |
+| 5 | Write `mock_data.py` — hardcoded `ResearchReport` for Apex Textiles |
+| 5 | **Integration Day:** expose `run_research(company_name, promoter_names) -> dict` |
+| 6 | Cache all results to JSON. Test reliability. Build DEMO MODE (returns mock if flag is set). |
+
+### Key Interface
+```python
+# research_pipeline.py
+def run_research(company_name: str, promoter_names: list[str], demo_mode: bool = False) -> dict:
+    """Returns ResearchReport dict"""
+```
+
+> **Important:** For web scraping failures (mca.gov.in is slow), always have `demo_mode=True` as fallback.
+
+---
+
+## 📊 Module 3 — Scoring & Explainability + CAM Generator (Person 3)
+
+**What you own:** `DocumentReport` + `ResearchReport` + officer notes → `ScoringResult` + `.docx` CAM
+
+### Files to Create
+```
+intelli-credit/
+  modules/
+    scoring/
+      scorecard_model.py     # 5-C weighted scoring logic
+      explainability.py      # SHAP chart + LLM narrative generation
+      loan_calculator.py     # recommended amount + rate
+      ews_engine.py          # RBI EWS Level 1/2/3 classification
+      cam_generator.py       # python-docx template → filled CAM Word doc
+      scoring_pipeline.py    # single entry point → ScoringResult
+      mock_data.py           # ScoringResult mock for M4 team
+```
+
+### Day-by-Day Tasks
+
+| Day | Task |
+|-----|------|
+| 1–2 | Design the scoring weights on paper. Study SHAP library. |
+| 3 | Build `ScorecardModel`: takes both reports, computes 5 component scores |
+| 3 | Build `LoanTermsCalculator`: maps score → recommended sanction amount + rate |
+| 4 | Build `ExplainabilityEngine`: SHAP waterfall dict + LLM narrative (Gemini API prompt) |
+| 4 | Build `EWSEngine`: maps score signals to RBI EWS levels |
+| 5 | Design CAM Word template using python-docx (structure from Section 4.7 of master plan) |
+| 5 | Build `CAMGenerator`: populates template from all inputs, embeds matplotlib charts |
+| 5 | Write `mock_data.py`. **Integration Day:** test pipeline with M1 + M2 mock data |
+| 6 | Polish narrative quality. Test full CAM doc end-to-end. Set up MLflow local tracking. |
+
+### Key Interface
+```python
+# scoring_pipeline.py
+def run_scoring(
+    document_report: dict,
+    research_report: dict,
+    officer_notes: str = ""
+) -> dict:
+    """Returns ScoringResult dict. Also writes CAM .docx to output/"""
+```
+
+### Qualitative Notes Parsing (Human-in-the-Loop)
+```python
+# In explainability.py
+def parse_officer_notes(notes: str, current_score: dict) -> dict:
+    """
+    Send officer notes to Gemini. Extract risk signals.
+    Return score delta and updated ScoringResult.
+    Example: "Factory at 40% capacity" → extracts capacity_risk → deducts 8 pts
+    """
+```
+
+---
+
+## 🖥️ Module 4 — Frontend Portal (Person 4)
+
+**What you own:** The Streamlit UI — the face of the entire system
+
+### Files to Create
+```
+intelli-credit/
+  app.py                     # main Streamlit app
+  components/
+    upload_panel.py           # file uploader + company name input
+    financial_panel.py        # extracted financial table (editable)
+    gst_panel.py              # GST traffic lights + mismatch chart
+    research_panel.py         # news cards + MCA + litigation display
+    score_dashboard.py        # gauge chart + component breakdown
+    decision_banner.py        # LEND / REJECT / CONDITIONS banner
+    ews_panel.py              # Early Warning Signal cards
+    cam_download.py           # Word + PDF download buttons
+  demo_data/
+    apex_textiles_document.json    # copy of M1 mock_data
+    apex_textiles_research.json    # copy of M2 mock_data
+    apex_textiles_scoring.json     # copy of M3 mock_data
+```
+
+### Day-by-Day Tasks
+
+| Day | Task |
+|-----|------|
+| 1 | Set up Streamlit. Install all UI libs: `streamlit plotly matplotlib streamlit-extras` |
+| 2 | Build `upload_panel.py`: multi-file uploader + company name + DEMO MODE toggle |
+| 2–3 | Build `financial_panel.py`: editable table showing all values from `DocumentReport.financials` |
+| 3 | Build `gst_panel.py`: traffic lights 🔴🟡🟢 + Matplotlib bar chart (declared vs actual GST) |
+| 4 | Build `research_panel.py`: news headline cards + MCA summary + litigation table |
+| 4 | Build `score_dashboard.py`: Plotly gauge chart (0–100) + horizontal bar chart of 5 components |
+| 5 | Build `decision_banner.py`: big coloured banner (green/amber/red) + officer notes text area |
+| 5 | **Integration Day:** wire real M1/M2/M3 pipeline calls into app.py (replace mock calls) |
+| 6 | Build `ews_panel.py`: EWS signal cards with RBI level badges |
+| 7–8 | Polish: custom CSS dark mode, progress bars during processing, stopwatch timer |
+| 8 | Final end-to-end test. Record 3-minute demo video backup. |
+
+### Key app.py Structure
+```python
+# app.py — skeleton
+import streamlit as st
+from modules.document_intelligence.document_pipeline import run_pipeline
+from modules.research_agent.research_pipeline import run_research
+from modules.scoring.scoring_pipeline import run_scoring
+
+DEMO_MODE = st.sidebar.toggle("🎬 DEMO MODE", value=True)
+
+if DEMO_MODE:
+    doc_report  = load_json("demo_data/apex_textiles_document.json")
+    res_report  = load_json("demo_data/apex_textiles_research.json")
+    score_result = load_json("demo_data/apex_textiles_scoring.json")
+else:
+    # real pipeline calls
+    uploaded = st.file_uploader(...)
+    doc_report = run_pipeline(uploaded, company_name)
+    res_report = run_research(company_name, promoter_names)
+    score_result = run_scoring(doc_report, res_report, officer_notes)
+```
+
+---
+
+## 📅 10-Day Sprint Calendar
+
+```
+Day  | M1 (Docs)          | M2 (Research)       | M3 (Scoring)        | M4 (Frontend)
+-----|---------------------|---------------------|---------------------|------------------
+ 1   | Setup + pdfplumber  | Setup + Tavily acct | Design scorecard    | Setup Streamlit
+ 2   | FinancialExtractor  | MCA Scraper         | ScorecardModel      | Upload + Financial panel
+ 3   | GSTValidator        | ECourtSearcher      | LoanCalculator      | GST + Research panel
+ 4   | BankParser          | NewsAggregator      | ExplainabilityEng   | Score dashboard
+ 5   | ✅ INTEGRATION 1    | ✅ INTEGRATION 1    | ✅ INTEGRATION 1    | ✅ Wire pipelines
+ 6   | Polish + confidence | Cache + demo mode   | CAM Generator       | EWS panel
+ 7   | Buffer / QA         | Buffer / QA         | MLflow setup        | CSS polish
+ 8   | ✅ INTEGRATION 2    | ✅ INTEGRATION 2    | ✅ INTEGRATION 2    | ✅ Full end-to-end
+ 9   | Demo rehearsal      | Demo rehearsal      | Presentation deck   | Demo video backup
+10   | SUBMISSION DAY      | SUBMISSION DAY      | SUBMISSION DAY      | SUBMISSION DAY
+```
+
+### Integration Day 5 — Goal
+- M1 drops `modules/document_intelligence/mock_data.py` into shared repo ✅
+- M2 drops `modules/research_agent/mock_data.py` into repo ✅
+- M3 runs scoring on M1 + M2 mock data, generates a CAM doc ✅
+- M4 loads all three mock JSONs into the UI — full flow visible on Day 5 ✅
+
+### Integration Day 8 — Goal
+- Replace ALL mock calls with real pipeline calls in `app.py`
+- Full live demo flow: upload PDFs → process → score → CAM download
+- Both demo companies pre-cached: **Apex Textiles (REJECT)** + one healthy company **(LEND)**
+
+---
+
+## 🔧 Shared Repository Setup
+
+```
+intelli-credit/                    ← GitHub repo root
+  app.py                           ← M4
+  requirements.txt                 ← all libs merged
+  .env                             ← API keys (Gemini, Tavily, NewsAPI) — NEVER commit
+  .env.example                     ← template to share safely
+  demo_data/                       ← mock JSONs all teams can use
+  output/                          ← generated CAM docs land here
+  modules/
+    document_intelligence/         ← M1
+    research_agent/                ← M2
+    scoring/                       ← M3
+  presentation/
+    slides/
+    architecture_diagram.png
+```
+
+**Branch strategy:** Each person works on `feature/<name>` branch. Merge to `main` only on Integration Days.
+
+---
+
+## 🚦 When You Are Blocked
+
+| Situation | Solution |
+|-----------|----------|
+| M1 not ready → M3 is blocked | Use `mock_data.py` — it's guaranteed to exist by Day 5 |
+| M2 scraper fails | Set `demo_mode=True` — returns pre-cached JSON |
+| M3 CAM generator slow | M4 shows a placeholder download button — wire it on Day 8 |
+| Any API quota hit | Gemini free tier: 1,500 req/day. Tavily: 1,000/month free tier |
+
+---
+
+## 📋 Each Person's Quick Reference Card
+
+### Person 1 — Document Guy
+> Your heroes: `pdfplumber`, `PaddleOCR`, `camelot-py`
+> Your output: `DocumentReport` dict (the contract above)
+> Your demo: Show GST mismatch chart (🔴 18.2%) live in the UI
+
+### Person 2 — Research Agent Guy
+> Your heroes: `LangChain AgentExecutor`, `Tavily`, `BeautifulSoup`
+> Your output: `ResearchReport` dict (the contract above)
+> Your demo: Show "Litigation found: NCLT Mumbai Case 2023/NC/142"
+
+### Person 3 — Scoring Guy
+> Your heroes: `scikit-learn`, `shap`, `python-docx`, `Gemini API`
+> Your output: `ScoringResult` dict + the actual CAM Word document
+> Your demo: Print the CAM doc. Leave a copy with the judges. 📄
+
+### Person 4 — Frontend Guy
+> Your heroes: `streamlit`, `plotly`, `matplotlib`
+> Your output: A beautiful dark-mode portal with DEMO MODE toggle
+> Your demo: Start the stopwatch. Upload PDFs. End the clock. Show CAM.
+
+---
+
+*Intelli-Credit — IIT Hyderabad Hackathon | Prize: ₹1,00,00,000 | Deadline: 10 March 2026*

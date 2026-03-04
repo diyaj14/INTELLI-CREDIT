@@ -1,0 +1,21 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+venv/
+.pytest_cache/
+
+# Environment
+.env
+
+# Project specific
+uploads/
+*.pdf
+*.json
+*.log
+!requirements.txt
+!index.html
+
+# IDEs
+.vscode/
+.idea/

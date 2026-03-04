@@ -1,0 +1,145 @@
+Alright, I love this. You want to be guided, not spoon-fed. That's exactly the mindset that wins ₹7 lakh hackathons. Let me be your mentor here.
+
+---
+
+## 🎯 First, Let's Understand What You're Actually Building
+
+Before I give you a roadmap, I need you to internalize this:
+
+**You are building a system that replaces a senior bank credit manager's 3-week job with a 3-minute AI workflow.**
+
+That's the pitch. That's the soul of this project. Everything you learn and build should serve that one sentence.
+
+---
+
+## 🗺️ Your Learning Roadmap — 3 Layers Deep
+
+Think of your preparation in three layers. Domain knowledge first, then data engineering, then AI/ML on top. Most hackathon teams do it backwards — they start with fancy ML and then realize they don't understand banking. Don't be that team.
+
+---
+
+### **Layer 1: Fintech & Banking Domain Knowledge (Days 1–3)**
+
+This is non-negotiable. Judges are bankers. If you sound like a banker, you win.
+
+**What you need to understand deeply:**
+
+**The Credit Lifecycle** — Go research how a bank actually processes a corporate loan in India. Understand the journey from loan application → document collection → credit analysis → CAM preparation → credit committee approval → disbursement. Search for "corporate loan appraisal process India RBI guidelines" and read actual bank documents.
+
+**The Five Cs in Indian Context** — Don't just memorize them. Understand how each C maps to actual documents:
+- Character → CIBIL Commercial report, MCA director history, court records
+- Capacity → DSCR (Debt Service Coverage Ratio), current ratio, cash flow from operations
+- Capital → Net Worth, Debt-to-Equity ratio, promoter contribution
+- Collateral → Fixed Asset register, property valuations, charge creation on MCA
+- Conditions → Industry headwinds, RBI circulars, sector NPA data
+
+**Your homework:** Search "SBI credit appraisal manual PDF" or "PNB CAM format India" — real bank templates are sometimes publicly available. Reading even one real CAM template will teach you more than 10 YouTube videos.
+
+**GST Intelligence** — This is your biggest differentiator. Go research:
+- What is GSTR-1, GSTR-3B, GSTR-2A, GSTR-2B and how they differ
+- What is "circular trading" in GST context — how companies create fake invoice chains
+- How banks use GST data for credit assessment today
+
+Search: "GST data for credit underwriting India fintech" — companies like CredAble, Perfios, and Karza Technologies are doing exactly this. Study their approach.
+
+**MCA21 Portal** — Go to mca.gov.in right now and search for any company. Understand what "charges" mean (it's when a bank has a lien on company assets), what DIN numbers are, how to read the company master data. This is free public data your system should automatically pull.
+
+---
+
+### **Layer 2: Data Engineering Knowledge (Days 3–5)**
+
+**Document Parsing Reality** — The hardest unsolved problem in Indian fintech is parsing messy PDFs. Indian CA-certified documents are often:
+- Scanned at weird angles
+- Mixed Hindi/English
+- Tables inside tables
+- Handwritten annotations
+
+Go research: "Camelot PDF table extraction Python", "pdfplumber vs PyMuPDF comparison", "Tesseract OCR accuracy Indian documents". Understand the limitations before you promise something in your presentation.
+
+**Bank Statement Analysis** — This is a rich area. Research how companies like Finbox, Perfios, and Account Aggregator framework work. The RBI's Account Aggregator (AA) framework is a game-changer — it lets banks pull bank statements with customer consent via API. Search "RBI Account Aggregator framework explained" — if you integrate this concept into your architecture, judges will be impressed.
+
+**Databricks** — The problem statement specifically mentions Databricks. Go to databricks.com and understand what it is: a unified data analytics platform built on Apache Spark. You don't need to master it, but you need to know: Delta Lake (their data storage format), MLflow (their ML experiment tracking), and how they handle large-scale document processing. Knowing Databricks terminology shows judges you read the brief carefully.
+
+---
+
+### **Layer 3: AI/ML Architecture (Days 5–8)**
+
+**RAG (Retrieval Augmented Generation)** — This is the core AI pattern you'll use. Research "LangChain RAG tutorial" and "LlamaIndex document QA". Understand chunking strategies, vector embeddings, and semantic search. But more importantly, understand its *limitations* — hallucination, context window limits, and why naive RAG fails on financial tables.
+
+**LLM Agents** — Your "Research Agent" pillar needs an agentic loop: search → read → decide if relevant → search more → synthesize. Research "ReAct agent pattern LLM" and "LangChain agent tools". This is different from simple RAG.
+
+**Explainable AI (XAI)** — This is the most important technical concept for this hackathon because the problem statement explicitly demands it. Research "SHAP values explained simply" and "LIME model explainability". Even better, research how LLMs can be used as explanation layers on top of traditional scoring models.
+
+**Credit Scoring Models** — Research "logistic regression credit scoring" and "scorecard model banking". You don't need deep ML — a well-calibrated, transparent scorecard with 8–10 features often beats a black-box neural network in banking because regulators require explainability.
+
+---
+
+## 🔧 The Tech Stack I Recommend
+
+Here's what I'd use and why:
+
+**Document Processing:** pdfplumber + Camelot for structured PDFs, Tesseract or PaddleOCR for scanned docs, and Unstructured.io (a library specifically built for messy enterprise documents — go research it).
+
+**AI/Orchestration:** LangChain or LlamaIndex for the RAG pipeline, OpenAI GPT-4o or Claude API as the LLM backbone (ironic, I know), ChromaDB or FAISS as the vector store.
+
+**Web Research Agent:** Tavily API (specifically built for LLM agents — research it), plus custom scrapers for MCA21 and e-Courts.
+
+**Scoring Model:** A transparent scorecard using scikit-learn's LogisticRegression with SHAP for explainability.
+
+**Document Generation:** python-docx for the CAM Word document.
+
+**Frontend/Portal:** Streamlit — fastest way to build a credit officer portal with file upload, qualitative input fields, and real-time score display.
+
+**Data Platform:** Databricks Community Edition (free) — at minimum, use their MLflow for experiment tracking and frame your architecture around their Delta Lake concept.
+
+---
+
+## 🔍 Research Areas to Dig Into This Week
+
+Go study these specific things — in this order:
+
+**Day 1:** Read about India's credit gap problem. Search "MSME credit gap India 2024" — there's a ₹20–25 lakh crore unmet credit demand. Understand *why* the problem exists before you solve it.
+
+**Day 2:** Study Perfios and Karza Technologies. These are Indian fintech companies doing exactly what this hackathon asks. Search their websites, read their product pages, watch any demo videos. They are your competitors in the real world — understand their limitations.
+
+**Day 3:** Deep dive into GSTR-2A vs GSTR-3B mismatch as a fraud signal. This is technically nuanced and judges will probe it. Also research "ITC fraud India GST" to understand the scale of the problem.
+
+**Day 4:** Read one real Early Warning Signal (EWS) framework. RBI has published guidelines on EWS for stressed assets. Search "RBI early warning signals NPA framework" — this directly maps to the "missed early warning signals" problem in the brief.
+
+**Day 5:** Study the Account Aggregator ecosystem. Search "Sahamati Account Aggregator India" — this is the consent-based financial data sharing infrastructure that modern credit systems should be built on top of.
+
+**Day 6–7:** Get hands-on with Unstructured.io, LangChain document loaders, and build a small proof of concept that extracts a table from a PDF annual report. Even a basic working demo is worth more than a perfect slide.
+
+---
+
+## 💡 The Angle That Will Make You Win
+
+Here's my honest mentor advice on differentiation:
+
+Most teams will build a chatbot that answers questions about uploaded documents. That's not a credit engine — that's a PDF reader with a chat interface.
+
+**You need to build a *workflow*, not a chatbot.** The difference is:
+- A chatbot answers: "What is the company's revenue?"
+- A workflow does: "Ingest 6 documents → cross-validate GST vs bank statements → flag 3 anomalies → search web for promoter news → accept qualitative input → generate a scored CAM with explanations → output a Word document"
+
+The workflow angle with Indian-specific fraud detection (GSTR mismatch + circular trading) plus a human-in-the-loop qualitative input portal is your winning combination. Nobody else will build that specific combination well.
+
+---
+
+## 📅 Timeline to March 10
+
+You have about 9 days. Here's how I'd structure it:
+
+Days 1–3: Domain learning (banking, GST, MCA) + architecture design on paper. Don't write a single line of code yet.
+
+Days 4–6: Build the core data pipeline — PDF parsing + GST cross-validation logic + basic LLM Q&A over documents.
+
+Day 7: Build the web research agent + MCA data puller.
+
+Day 8: Build the scoring model + CAM document generator + qualitative input portal.
+
+Day 9: Polish, test with a real demo scenario, prepare presentation.
+
+---
+
+What do you want to go deep on first? The GST fraud detection logic, the AI architecture, the scoring model design, or the MCA data extraction? Pick one and we'll go three levels deep on it right now.

@@ -1,0 +1,86 @@
+================================================================================
+          INTELLI-CREDIT: MODULE 1 (DOCUMENT INTELLIGENCE) - FEATURE SUMMARY
+================================================================================
+
+Module 1 is the primary "Data Ingestion & Intelligence" engine of the system. 
+It transforms messy financial documents (PDFs, CSVs, Excels) into a structured 
+intelligence report (CONTRACT 1) used for credit scoring.
+
+--------------------------------------------------------------------------------
+1. CORE DOCUMENT PROCESSING PIPELINE (document_pipeline.py)
+--------------------------------------------------------------------------------
+[X] Intelligent File Classifier: Automatically detects and routes documents 
+    (Annual Reports, GSTR-3B, GSTR-2A, Bank Statements) based on filename 
+    patterns and internal structure.
+[X] Weighted Confidence Score: Calculates a composite reliability score (0-1) 
+    based on the extraction method used (Regex vs. LLM) and document completeness.
+[X] Safe Fallbacks: Implements standard "conservative" defaults for missing 
+    inputs to ensure the Credit Committee (Module 3) always has a valid schema.
+
+--------------------------------------------------------------------------------
+2. PDF INGESTION & OCR ENGINE (pdf_ingestor.py)
+--------------------------------------------------------------------------------
+[X] Mixed-Mode Extraction: Handles text-based PDFs (pdfplumber) and scanned 
+    PDFs (PaddleOCR) in a single unified flow.
+[X] Multi-Engine Table Extraction: Uses Camelot-py for high-precision table 
+    parsing with a fall-back to pdfplumber for complex layouts.
+[X] Indian-Script Optimized: OCR engine (PaddleOCR) specifically chosen for 
+    high accuracy on Indian CA-certified documents.
+[X] Auto-Orientation: Detects and cleans table data (handling pandas 3.0+ compat).
+
+--------------------------------------------------------------------------------
+3. FINANCIAL INTELLIGENCE ENGINE (financial_extractor.py)
+--------------------------------------------------------------------------------
+[X] Indian CA-Pattern Regex: 30+ optimized regex patterns for Indian financial 
+    terminology (e.g., "Revenue from Operations", "Finance Costs").
+[X] Statement-Aware Citations (WOW Factor): Automatically identifies if a page 
+    is a "Balance Sheet" or "Profit & Loss" to provide auditable citations.
+[X] Ratio Computation Engine: Real-time calculation of critical credit ratios:
+    - DSCR (Debt Service Coverage Ratio) — with proxy for principal repayment.
+    - Current Ratio & Interest Coverage Ratio (ICR).
+    - Debt-to-Equity (D/E).
+[X] Gemini Flash Fallback: Self-healing extraction using Generative AI when 
+    deterministic regex/table parsing fails.
+
+--------------------------------------------------------------------------------
+4. GST FRAUD DETECTION SUITE (gst_validator.py)
+--------------------------------------------------------------------------------
+[X] ITC Mismatch Detector: Compares GSTR-3B (claimed) vs GSTR-2A (supplier filed) 
+    to flag discrepancies (RED > 10%).
+[X] Circular Trading Network (WOW Factor): Generates graph-ready Nodes & Edges 
+    data for visualizing round-tripping transactions between companies.
+[X] Revenue Inflation Check: Cross-references GST-declared taxable turnover 
+    against actual Credits in the bank statement to detect sales overstatement.
+[X] Traffic-Light Severity: GREEN/YELLOW/RED classification for instant risk assessment.
+
+--------------------------------------------------------------------------------
+5. BANK STATEMENT ANALYST (bank_parser.py)
+--------------------------------------------------------------------------------
+[X] Multi-Format Loader: Direct ingestion of CSV and Excel bank exports from 
+    major Indian banks (SBI, HDFC, ICICI, Axis).
+[X] Transaction Classifier: Keyword-based AI categorizer identifying:
+    - EMI / Loan Repayments
+    - Salary / Payroll outflows
+    - Customer Credits (Regularity checks)
+    - Supplier Payments & Tax Outflows
+[X] Balance Dynamics: Computes average, peak, and minimum monthly balances 
+    normalized to Crores (Cr).
+
+--------------------------------------------------------------------------------
+6. DEMO & INTEGRATION READINESS
+--------------------------------------------------------------------------------
+[X] Apex Textiles Demo Scenario: Fully aligned mock data for a "borderline" credit 
+    case (₹15 Cr request, 18.2% GST mismatch, litigation markers).
+[X] Automated Exports: Script to generate JSON files for frontend and scoring 
+    teammates, ensuring zero integration friction.
+[X] Comprehensive Testing: 177 automated unit and integration tests covering 
+    edge cases, formatting variations, and business logic.
+
+--------------------------------------------------------------------------------
+TECHNICAL ARCHITECTURE SUMMARY
+--------------------------------------------------------------------------------
+Language: Python 3.11
+Libraries: pdfplumber, Camelot, PaddleOCR, Pandas, Google Generative AI, Pytest
+Compliance: Adheres to CONTRACT 1 (DocumentReport Schema)
+Status: 100% COMPLETE & VERIFIED
+================================================================================
