@@ -1,0 +1,391 @@
+{
+  "company_name": "Apex Textiles Pvt Ltd",
+  "gstin": "27AAPCA1234F1Z5",
+  "financials": {
+    "revenue_cr": 42.5,
+    "ebitda_cr": 6.1,
+    "net_profit_cr": 2.3,
+    "total_assets_cr": 38.0,
+    "total_liabilities_cr": 24.0,
+    "net_worth_cr": 14.0,
+    "dscr": 0.89,
+    "current_ratio": 1.1,
+    "debt_to_equity": 1.71,
+    "interest_coverage": 2.4
+  },
+  "gst_analysis": {
+    "mismatch_pct": 18.2,
+    "mismatch_flag": "RED",
+    "circular_trading_flag": true,
+    "revenue_inflation_flag": false,
+    "gst_score": 8,
+    "mismatch_detail": {
+      "Q1-FY24": {
+        "itc_claimed": 4.5,
+        "itc_available_2a": 3.2,
+        "mismatch_pct": 40.6
+      },
+      "Q2-FY24": {
+        "itc_claimed": 5.1,
+        "itc_available_2a": 4.8,
+        "mismatch_pct": 6.25
+      },
+      "Q3-FY24": {
+        "itc_claimed": 4.8,
+        "itc_available_2a": 4.1,
+        "mismatch_pct": 17.0
+      },
+      "Q4-FY24": {
+        "itc_claimed": 3.8,
+        "itc_available_2a": 4.2,
+        "mismatch_pct": -9.5
+      }
+    },
+    "circular_graph_data": {
+      "nodes": [
+        {
+          "id": "TARGET",
+          "label": "Apex Textiles",
+          "type": "main"
+        },
+        {
+          "id": "GSTIN-SUP-001",
+          "label": "Tex-Supply Co",
+          "type": "circular"
+        },
+        {
+          "id": "GSTIN-SUP-002",
+          "label": "Cotton Hub",
+          "type": "supplier"
+        },
+        {
+          "id": "GSTIN-BUY-001",
+          "label": "Retail-Corp",
+          "type": "buyer"
+        }
+      ],
+      "edges": [
+        {
+          "from": "GSTIN-SUP-001",
+          "to": "TARGET",
+          "value": 1.2,
+          "type": "purchase"
+        },
+        {
+          "from": "TARGET",
+          "to": "GSTIN-SUP-001",
+          "value": 0.8,
+          "type": "sale"
+        },
+        {
+          "from": "GSTIN-SUP-002",
+          "to": "TARGET",
+          "value": 2.5,
+          "type": "purchase"
+        },
+        {
+          "from": "TARGET",
+          "to": "GSTIN-BUY-001",
+          "value": 3.1,
+          "type": "sale"
+        }
+      ]
+    }
+  },
+  "bank_statement": {
+    "avg_balance_cr": 1.8,
+    "emi_outflow_monthly_cr": 0.42,
+    "peak_balance_cr": 4.1,
+    "regular_credits": true,
+    "month_on_month_volatility": 0.28,
+    "stress_months_count": 3,
+    "inward_outward_ratio_trend": [
+      1.1,
+      0.8,
+      0.9,
+      1.2,
+      0.7,
+      1.0
+    ]
+  },
+  "extraction_confidence": 0.91,
+  "source_citations": {
+    "revenue_cr": "Profit & Loss, Page 3: 'Revenue from operations 42.5 Cr'",
+    "ebitda_cr": "Profit & Loss, Page 3: 'EBITDA 6.1 Cr'",
+    "net_profit_cr": "Profit & Loss, Page 3: 'Profit for the year 2.3 Cr'",
+    "total_assets_cr": "Balance Sheet, Page 5: 'Total Assets 38.0 Cr'",
+    "total_liabilities_cr": "Balance Sheet, Page 5: 'Total Liabilities 24.0 Cr'",
+    "net_worth_cr": "Balance Sheet, Page 5: 'Total Equity 14.0 Cr'",
+    "dscr": "Computed: EBITDA / (Interest \u20b91.8Cr + Principal \u20b95.0Cr)",
+    "current_ratio": "Balance Sheet, Page 6: 'Current Ratio 1.10'",
+    "debt_to_equity": "Computed: Total Debt 24.0 / Net Worth 14.0",
+    "interest_coverage": "Profit & Loss, Page 4: 'ICR 2.40'"
+  },
+  "source_citations_structured": {
+    "revenue_cr": {
+      "value": 42.5,
+      "unit": "Cr",
+      "source_page": 3,
+      "source_statement": "Profit & Loss",
+      "confidence": 0.94,
+      "context": "Revenue from operations 42.50 Cr for the year ended 31st March 2024",
+      "method": "regex"
+    },
+    "ebitda_cr": {
+      "value": 6.1,
+      "unit": "Cr",
+      "source_page": 3,
+      "source_statement": "Profit & Loss",
+      "confidence": 0.94,
+      "context": "EBITDA 6.10 Cr (EBIT + Depreciation 0.8 Cr)",
+      "method": "regex"
+    },
+    "net_profit_cr": {
+      "value": 2.3,
+      "unit": "Cr",
+      "source_page": 3,
+      "source_statement": "Profit & Loss",
+      "confidence": 0.94,
+      "context": "Profit for the year (after tax) 2.30 Cr",
+      "method": "regex"
+    },
+    "total_assets_cr": {
+      "value": 38.0,
+      "unit": "Cr",
+      "source_page": 5,
+      "source_statement": "Balance Sheet",
+      "confidence": 0.94,
+      "context": "Total Assets 38.00 Cr",
+      "method": "regex"
+    },
+    "total_liabilities_cr": {
+      "value": 24.0,
+      "unit": "Cr",
+      "source_page": 5,
+      "source_statement": "Balance Sheet",
+      "confidence": 0.94,
+      "context": "Total Liabilities 24.00 Cr",
+      "method": "regex"
+    },
+    "net_worth_cr": {
+      "value": 14.0,
+      "unit": "Cr",
+      "source_page": 5,
+      "source_statement": "Balance Sheet",
+      "confidence": 0.8,
+      "context": "Computed: Total Assets 38.0 \u2212 Total Liabilities 24.0",
+      "method": "computed"
+    },
+    "dscr": {
+      "value": 0.89,
+      "unit": "ratio",
+      "source_page": null,
+      "source_statement": "Computed",
+      "confidence": 0.8,
+      "context": "EBITDA 6.1 / (Interest 1.8 + Annual Principal 5.0)",
+      "method": "computed"
+    },
+    "current_ratio": {
+      "value": 1.1,
+      "unit": "ratio",
+      "source_page": 6,
+      "source_statement": "Balance Sheet",
+      "confidence": 0.94,
+      "context": "Current Ratio 1.10 (Current Assets 19.8 / Current Liabilities 18.0)",
+      "method": "regex"
+    },
+    "debt_to_equity": {
+      "value": 1.71,
+      "unit": "ratio",
+      "source_page": null,
+      "source_statement": "Computed",
+      "confidence": 0.8,
+      "context": "Total Debt 24.0 / Net Worth 14.0",
+      "method": "computed"
+    },
+    "interest_coverage": {
+      "value": 2.4,
+      "unit": "ratio",
+      "source_page": 4,
+      "source_statement": "Profit & Loss",
+      "confidence": 0.94,
+      "context": "Interest Coverage Ratio 2.40 (EBIT / Finance Costs)",
+      "method": "regex"
+    }
+  },
+  "multi_year_financials": {
+    "FY22": {
+      "revenue_cr": 51.2,
+      "ebitda_cr": 9.8,
+      "net_profit_cr": 4.1,
+      "total_assets_cr": 42.0,
+      "net_worth_cr": 18.0,
+      "dscr": 1.31,
+      "current_ratio": 1.4,
+      "debt_to_equity": 1.33,
+      "interest_coverage": 3.2
+    },
+    "FY23": {
+      "revenue_cr": 46.8,
+      "ebitda_cr": 7.9,
+      "net_profit_cr": 3.2,
+      "total_assets_cr": 39.5,
+      "net_worth_cr": 16.2,
+      "dscr": 1.08,
+      "current_ratio": 1.22,
+      "debt_to_equity": 1.44,
+      "interest_coverage": 2.85
+    },
+    "FY24": {
+      "revenue_cr": 42.5,
+      "ebitda_cr": 6.1,
+      "net_profit_cr": 2.3,
+      "total_assets_cr": 38.0,
+      "net_worth_cr": 14.0,
+      "dscr": 0.89,
+      "current_ratio": 1.1,
+      "debt_to_equity": 1.71,
+      "interest_coverage": 2.4
+    }
+  },
+  "yoy_changes": {
+    "revenue_cr": [
+      {
+        "from_year": "FY22",
+        "to_year": "FY23",
+        "pct_change": -8.59
+      },
+      {
+        "from_year": "FY23",
+        "to_year": "FY24",
+        "pct_change": -9.19
+      }
+    ],
+    "ebitda_cr": [
+      {
+        "from_year": "FY22",
+        "to_year": "FY23",
+        "pct_change": -19.39
+      },
+      {
+        "from_year": "FY23",
+        "to_year": "FY24",
+        "pct_change": -22.78
+      }
+    ],
+    "net_profit_cr": [
+      {
+        "from_year": "FY22",
+        "to_year": "FY23",
+        "pct_change": -21.95
+      },
+      {
+        "from_year": "FY23",
+        "to_year": "FY24",
+        "pct_change": -28.13
+      }
+    ],
+    "dscr": [
+      {
+        "from_year": "FY22",
+        "to_year": "FY23",
+        "pct_change": -17.56
+      },
+      {
+        "from_year": "FY23",
+        "to_year": "FY24",
+        "pct_change": -17.59
+      }
+    ],
+    "current_ratio": [
+      {
+        "from_year": "FY22",
+        "to_year": "FY23",
+        "pct_change": -12.86
+      },
+      {
+        "from_year": "FY23",
+        "to_year": "FY24",
+        "pct_change": -9.84
+      }
+    ]
+  },
+  "trend_signals": [
+    {
+      "level": 2,
+      "signal": "Revenue declining for 2 consecutive years \u2014 YoY changes: ['-8.6%', '-9.2%']",
+      "category": "revenue_trend",
+      "field": "revenue_cr"
+    },
+    {
+      "level": 2,
+      "signal": "DSCR 0.89 below 1.0 \u2014 company cannot service debt from operating income (RBI threshold: 1.25)",
+      "category": "debt_serviceability",
+      "field": "dscr"
+    },
+    {
+      "level": 1,
+      "signal": "DSCR deteriorating consistently over 3 years (FY22\u2192FY23: -17.6%, FY23\u2192FY24: -17.6%)",
+      "category": "debt_serviceability",
+      "field": "dscr"
+    },
+    {
+      "level": 1,
+      "signal": "Current ratio 1.10, below RBI preferred minimum of 1.33",
+      "category": "liquidity",
+      "field": "current_ratio"
+    }
+  ],
+  "early_warning_signals": [
+    {
+      "level": 2,
+      "signal": "DSCR 0.89 below 1.0 \u2014 operating income cannot cover debt service obligations (RBI threshold: 1.25)",
+      "category": "debt_serviceability",
+      "field": "dscr",
+      "threshold": "< 1.0"
+    },
+    {
+      "level": 2,
+      "signal": "GST ITC mismatch 18.2% \u2014 exceeds 15.0% threshold, indicating potential input tax credit fraud",
+      "category": "gst_compliance",
+      "field": "gst_mismatch_pct",
+      "threshold": "> 15.0%"
+    },
+    {
+      "level": 2,
+      "signal": "Monthly EMI \u20b90.42 Cr is 23% of avg balance \u20b91.80 Cr \u2014 limited liquidity buffer",
+      "category": "banking_behaviour",
+      "field": "emi_outflow_monthly_cr",
+      "threshold": "EMI > 50% of avg_balance"
+    },
+    {
+      "level": 2,
+      "signal": "Revenue declining for 2 consecutive years \u2014 YoY changes: ['-8.6%', '-9.2%']",
+      "category": "revenue_trend",
+      "field": "revenue_cr",
+      "threshold": "trend-based"
+    },
+    {
+      "level": 1,
+      "signal": "Current ratio 1.10 below RBI norm of 1.33 \u2014 liquidity under pressure",
+      "category": "liquidity",
+      "field": "current_ratio",
+      "threshold": "< 1.33"
+    },
+    {
+      "level": 1,
+      "signal": "Interest Coverage Ratio 2.40x below preferred minimum of 2.5x",
+      "category": "debt_serviceability",
+      "field": "interest_coverage",
+      "threshold": "< 2.5"
+    },
+    {
+      "level": 1,
+      "signal": "Net profit margin 5.4% \u2014 very thin margin (< 2% signals fragile profitability)",
+      "category": "profitability",
+      "field": "net_profit_cr",
+      "threshold": "margin < 2%"
+    }
+  ],
+  "low_confidence_fields": []
+}
