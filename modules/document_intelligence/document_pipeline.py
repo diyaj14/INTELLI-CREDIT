@@ -62,9 +62,10 @@ class FileClassifier:
     ]
     GST_3B_KEYWORDS  = ["3b", "gstr3b", "gstr-3b", "3b_", "_3b", "3b.", "return"]
     GST_2A_KEYWORDS  = ["2a", "gstr2a", "gstr-2a", "2a_", "_2a", "2a.", "auto"]
-    BANK_KEYWORDS    = ["bank", "statement", "account", "passbook", "ledger", "current", "saving", "ca", "ods"]
+    BANK_KEYWORDS    = ["bank", "statement", "account", "passbook", "ledger", "current_account", "savings_account", "transaction"]
+    CAM_KEYWORDS     = ["cam", "appraisal", "memo", "credit_appraisal"]
     LEGAL_KEYWORDS    = ["legal", "notice", "litigation", "court", "summon", "case"]
-    SANCTION_KEYWORDS = ["sanction", "loan", "letter", "term", "limit", "bank", "proposal"]
+    SANCTION_KEYWORDS = ["sanction", "loan", "letter", "term", "limit", "proposal"]
 
     def classify(self, filepath: str) -> str:
         """
@@ -91,6 +92,8 @@ class FileClassifier:
                 return "legal_notice"
             if any(kw in filename for kw in self.SANCTION_KEYWORDS):
                 return "sanction_letter"
+            if any(kw in filename for kw in self.CAM_KEYWORDS):
+                return "annual_report" # Treat CAM as financial source
             # Default for PDFs → annual report / financial statement
             return "annual_report"
 
@@ -221,8 +224,12 @@ def run_pipeline(
                 multi_year_financials         = fin_result.get("multi_year_financials", {})
                 yoy_changes                   = fin_result.get("yoy_changes", {})
                 trend_signals                 = fin_result.get("trend_signals", [])
-            
-            # Extract Qualitative Risks (Pillar 1 requirement)
+                
+                # Update company name if we discovered a better one
+                extracted_name = fin_result.get("company_name", "Unknown Company")
+                if extracted_name != "Unknown Company" and (company_name == "Unknown Company" or not company_name):
+                    company_name = extracted_name
+                    logger.info(f"Discovered company name from document: {company_name}")
             for fp in target_extraction_files:
                 doc_type = classifier.classify(fp)
                 if doc_type in ["legal_notice", "sanction_letter", "annual_report"]:

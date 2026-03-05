@@ -1,5 +1,0 @@
-In this round, qualified teams must submit a presentation explaining the prototype they have developed for the given problem statement. This stage focuses on the working prototype—its functionality, key features, technical architecture, and the tools and methods used during implementation.
-
-Presentations should include visuals (wireframes, mockups, or screenshots) to clearly showcase the prototype, along with its potential real-world applications such as scalability and relevance.
-
-Deadline:10/03/2026 (EOD)

@@ -419,9 +419,10 @@ class FinancialExtractor:
             from dotenv import load_dotenv
             load_dotenv()
 
-            api_key = os.getenv("GEMINI_API_KEY")
+            # Try both aliases
+            api_key = os.getenv("GEMINI_API_KEY") or os.getenv("GOOGLE_API_KEY")
             if not api_key:
-                logger.warning("GEMINI_API_KEY not set — LLM fallback unavailable")
+                logger.warning("GEMINI_API_KEY/GOOGLE_API_KEY not set — LLM fallback unavailable")
                 return None
 
             genai.configure(api_key=api_key)
@@ -1080,7 +1081,8 @@ Document Text:
         """
         logger.info("Starting financial extraction...")
 
-        # ── Step 1: Regex extraction for all fields ────────────────────────────
+        # ── Step 0: Extract Company Name ───────────────────────────────────────
+        company_name = self.extract_company_name(use_llm_fallback=use_llm_fallback)
         all_fields = list(FIELD_PATTERNS.keys())
         for field in all_fields:
             val, citation = self.extract_field_regex(field)
@@ -1194,6 +1196,7 @@ Document Text:
         trend_sigs = self.generate_trend_signals(multi_year, yoy)
 
         return {
+            "company_name":              company_name,
             "financials":                financials,
             "source_citations":          source_citations,          # plain strings (backward compat)
             "source_citations_structured": source_citations_structured,  # Feature 2: rich objects
@@ -1202,3 +1205,45 @@ Document Text:
             "yoy_changes":               yoy,
             "trend_signals":             trend_sigs,
         }
+
+    def extract_company_name(self, use_llm_fallback: bool = True) -> str:
+        """
+        Attempts to extract the company name from the first few pages of the document.
+        """
+        # 1. Regex candidate (usually at the start of the document)
+        patterns = [
+            r"(?i)(?:Name\s+of\s+the\s+Company|Company\s+Name)[:\s]*([A-Z\s]{4,60})",
+            r"(?i)([A-Z\s]{4,60} (?:Limited|Private Limited|Pvt\.? Ltd|Ltd\.?))",
+        ]
+        
+        # Check first 3 pages
+        for pg_num in [1, 2, 3]:
+            text = self.raw_text.get(pg_num, "")
+            if not text: continue
+            
+            for p in patterns:
+                match = re.search(p, text)
+                if match:
+                    name = match.group(1).strip().strip("\n").replace("  ", " ")
+                    if len(name) > 5:
+                        logger.info(f"Extracted company name via regex: {name}")
+                        return name
+
+        # 2. LLM Fallback (more reliable for unstructured cover pages)
+        if use_llm_fallback:
+            model = self._load_gemini()
+            if model:
+                try:
+                    # Just use first page
+                    cover_text = self.raw_text.get(1, "")[:2000]
+                    if cover_text:
+                        prompt = f"Extract the full official legal name of the company from this document text. Return ONLY the name. If not found, return Unknown.\n\nText:\n{cover_text}"
+                        response = model.generate_content(prompt)
+                        name = response.text.strip()
+                        if name and "Unknown" not in name:
+                            logger.info(f"Extracted company name via LLM: {name}")
+                            return name
+                except Exception as e:
+                    logger.warning(f"LLM company name extraction failed: {e}")
+
+        return "Unknown Company"

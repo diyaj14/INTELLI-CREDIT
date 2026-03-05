@@ -27,6 +27,9 @@ from pathlib import Path
 from typing import Optional
 
 import pandas as pd
+from dotenv import load_dotenv
+
+load_dotenv()
 
 logger = logging.getLogger(__name__)
 
@@ -321,7 +324,8 @@ class PDFIngestor:
             if self._ocr_engine is None:
                 logger.info("Initializing PaddleOCR engine...")
                 try:
-                    self._ocr_engine = PaddleOCR(lang=self.ocr_language, use_angle_cls=True, show_log=False)
+                    # Some PaddleOCR versions don't support show_log in constructor
+                    self._ocr_engine = PaddleOCR(lang=self.ocr_language, use_angle_cls=True)
                 except Exception as e:
                     logger.warning(f"PaddleOCR init failed: {e}. Switching to Vision Fallback.")
                     PaddleOCR = None
@@ -344,9 +348,10 @@ class PDFIngestor:
 
         # ── Strategy 2: Gemini Vision Fallback (Agentic) ──────────────────────
         logger.info("🚀 PaddleOCR unavailable/failed. Engaging Gemini Vision Fallback...")
-        api_key = os.getenv("GEMINI_API_KEY")
+        # Try both GEMINI_API_KEY and GOOGLE_API_KEY (default in .env)
+        api_key = os.getenv("GEMINI_API_KEY") or os.getenv("GOOGLE_API_KEY")
         if not api_key:
-            logger.error("Vision Fallback failed: GEMINI_API_KEY missing.")
+            logger.error("Vision Fallback failed: GEMINI_API_KEY/GOOGLE_API_KEY missing.")
             return {}
 
         try:

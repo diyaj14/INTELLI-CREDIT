@@ -220,6 +220,13 @@ class BankStatementParser:
         if self._df is None:
             raise RuntimeError("Load a statement first with load_statement()")
 
+        if self._df.empty or len(self._df.columns) < 2:
+            # If DataFrame is empty or has too few columns to determine description,
+            # add an empty 'category' column or return as is.
+            if "category" not in self._df.columns:
+                self._df["category"] = pd.Series(dtype='object') if self._df.empty else "misc"
+            return self._df
+
         def classify(description: str) -> str:
             desc = str(description).lower()
             for category, keywords in CATEGORY_RULES.items():
