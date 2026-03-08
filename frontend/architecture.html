@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Architecture | Intelli-Credit</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="landing.css">
+</head>
+
+<body>
+    <div class="bg-grid"></div>
+    <div class="bg-glow"></div>
+
+    <nav>
+        <div class="nav-container">
+            <div class="logo"><a href="index.html">INTELLI-CREDIT</a></div>
+            <div class="nav-items">
+                <a href="index.html">Home</a>
+                <a href="features.html">Features</a>
+                <a href="case-studies.html">Case Studies</a>
+                <a href="architecture.html" style="color:#fff;">Architecture</a>
+                <a href="api-docs.html">API</a>
+            </div>
+            <a href="dashboard.html" class="btn-p">Launch Dashboard</a>
+        </div>
+    </nav>
+
+    <main class="container" style="padding-top: 180px;">
+        <div class="sec-title reveal visible">
+            <h1 style="font-size: 4rem; margin-bottom: 20px;">System <span class="grad-t">Anatomy</span></h1>
+            <p>Our distributed architecture ensures high-availability and extreme precision in risk assessment.</p>
+        </div>
+
+        <div class="hero-visual reveal visible"
+            style="height: 600px; padding: 40px; background: rgba(15, 23, 42, 0.4); border-radius: 40px; border: 1px solid var(--border-light); perspective: none;">
+            <!-- Flow Diagram Simulation -->
+            <div
+                style="display: flex; flex-direction: column; gap: 40px; align-items: center; justify-content: center; height: 100%;">
+                <div class="stat-box reveal-left visible"
+                    style="width: 300px; text-align: center; border-color: var(--primary);">
+                    <i class="fa-solid fa-cloud-arrow-up anim-float"
+                        style="color: var(--primary); font-size: 2rem; margin-bottom: 10px;"></i>
+                    <div class="title">Ingestion Layer</div>
+                    <div class="lbl">Parallel PDF Parsing</div>
+                </div>
+                <i class="fa-solid fa-arrow-down reveal visible" style="color: var(--text-muted); opacity: 0.5;"></i>
+                <div style="display: flex; gap: 40px;">
+                    <div class="stat-box reveal-left visible"
+                        style="width: 250px; text-align: center; border-color: var(--secondary);">
+                        <i class="fa-solid fa-microchip anim-float"
+                            style="color: var(--secondary); font-size: 1.5rem; margin-bottom: 10px;"></i>
+                        <div class="title">Vision-Language</div>
+                        <div class="lbl">OCR & Semantic Extraction</div>
+                    </div>
+                    <div class="stat-box reveal-right visible"
+                        style="width: 250px; text-align: center; border-color: var(--accent);">
+                        <i class="fa-solid fa-globe anim-float"
+                            style="color: var(--accent); font-size: 1.5rem; margin-bottom: 10px;"></i>
+                        <div class="title">Autonomous Agent</div>
+                        <div class="lbl">Live Web Intelligence</div>
+                    </div>
+                </div>
+                <i class="fa-solid fa-arrow-down reveal visible" style="color: var(--text-muted); opacity: 0.5;"></i>
+                <div class="stat-box reveal visible" style="width: 300px; text-align: center; border-color: #22c55e;">
+                    <i class="fa-solid fa-shield-cat anim-glow"
+                        style="color: #22c55e; font-size: 2rem; margin-bottom: 10px;"></i>
+                    <div class="title">Scoring & Decision</div>
+                    <div class="lbl">Unified Risk Matrix</div>
+                </div>
+            </div>
+        </div>
+
+        <section style="display: grid; grid-template-columns: 1fr 1fr; gap: 40px; margin-top: 100px;">
+            <div class="feat-card glass-card reveal-left visible">
+                <h3>Cascading LLM Gateway</h3>
+                <p>To ensure 100% uptime for banking clients, we utilize a priority-based model fallback system. If
+                    Gemini is rate-limited, we transition to Groq; if Groq fails, we fall back to OpenRouter or local
+                    Ollama instances.</p>
+            </div>
+            <div class="feat-card glass-card reveal-right visible">
+                <h3>Hybrid Data Fusion</h3>
+                <p>Our unique "Hybrid Merger" module cross-references document extraction with live web truth. If
+                    there's a discrepancy between a balance sheet and a news report, the system flags it for human
+                    audit, reducing manual due-diligence by 80%.</p>
+            </div>
+        </section>
+    </main>
+
+    <footer style="margin-top: 100px;">
+        <div class="footer-wrap">
+            <div class="f-logo">INTELLI-CREDIT</div>
+            <div class="f-links">
+                <span>Privacy</span>
+                <span>Terms</span>
+                <span>System Status</span>
+                <span>Support</span>
+            </div>
+        </div>
+        <div class="f-copy">&copy; 2026 INTELLI-CREDIT PLATFORM. ALL RIGHTS RESERVED.</div>
+    </footer>
+
+    <script>
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.1 });
+        document.querySelectorAll('.reveal, .reveal-left, .reveal-right').forEach(el => observer.observe(el));
+    </script>
+</body>
+
+</html>

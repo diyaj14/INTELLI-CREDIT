@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Intelli-Credit | The Future of Credit Analytics</title>
+
+    <!-- Modern Typeface -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <!-- Premium Styles -->
+    <link rel="stylesheet" href="landing.css">
+</head>
+
+<body>
+    <!-- Background Effects -->
+    <div class="bg-grid"></div>
+    <div class="bg-glow"></div>
+
+    <!-- Navigation -->
+    <nav>
+        <div class="nav-container">
+            <div class="logo">INTELLI-CREDIT</div>
+            <div class="nav-items">
+                <a href="index.html">Home</a>
+                <a href="features.html">Features</a>
+                <a href="case-studies.html">Case Studies</a>
+                <a href="architecture.html">Architecture</a>
+                <a href="api-docs.html">API</a>
+            </div>
+            <a href="dashboard.html" class="btn-p">Launch Dashboard</a>
+        </div>
+    </nav>
+
+    <main>
+        <!-- 1. Hero Section -->
+        <section class="hero">
+            <div class="container hero-wrapper reveal">
+                <!-- Left: Headings & CTA -->
+                <div class="hero-content">
+                    <h1>Unlock the <br>Power of <br><span class="grad-t">Credit Data</span></h1>
+                    <p>Experience real-time insights, multi-pillar risk modeling, and seamless financial intelligence
+                        with the all-new Intelli-Credit Engine.</p>
+                    <div style="display: flex; gap: 20px;">
+                        <a href="dashboard.html" class="btn-p" style="padding: 18px 48px; font-size: 1.25rem;">Get
+                            Started <i class="fa-solid fa-arrow-right" style="margin-left: 8px;"></i></a>
+                    </div>
+                </div>
+
+                <!-- Right: Floating Abstract Cards Visualizer -->
+                <div class="hero-visual">
+                    <!-- Base App Card -->
+                    <div class="card-main">
+                        <!-- Top Header Bar -->
+                        <div class="card-main-header">
+                            <div class="dots">
+                                <span></span><span></span><span></span>
+                            </div>
+                            <div class="header-title">Intelli-Credit Engine</div>
+                        </div>
+
+                        <div class="card-main-body">
+                            <!-- Left sidebar mock -->
+                            <div class="sidebar-mock">
+                                <div class="nav-mock active"></div>
+                                <div class="nav-mock"></div>
+                                <div class="nav-mock"></div>
+                                <div class="nav-mock"></div>
+                            </div>
+                            <!-- Main content mock -->
+                            <div class="content-mock">
+                                <div class="stats-row">
+                                    <div class="stat-box">
+                                        <div class="title">RSI Index</div>
+                                        <div class="val">84.2</div>
+                                        <div class="sparkline"></div>
+                                    </div>
+                                    <div class="stat-box">
+                                        <div class="title">NPA Risk</div>
+                                        <div class="val" style="color: #06b6d4;">Low</div>
+                                        <div class="sparkline green"></div>
+                                    </div>
+                                </div>
+                                <div class="chart-mock">
+                                    <div class="chart-line"></div>
+                                    <div class="chart-line"></div>
+                                    <div class="chart-line"></div>
+                                    <svg viewBox="0 0 100 50" preserveAspectRatio="none">
+                                        <defs>
+                                            <linearGradient id="grad2" x1="0%" y1="0%" x2="0%" y2="100%">
+                                                <stop offset="0%" style="stop-color:var(--primary);stop-opacity:0.4" />
+                                                <stop offset="100%" style="stop-color:var(--primary);stop-opacity:0" />
+                                            </linearGradient>
+                                        </defs>
+                                        <path d="M0,50 L0,40 C20,30 30,50 50,20 C70,-10 80,30 100,10 L100,50 Z"
+                                            fill="url(#grad2)"></path>
+                                        <path d="M0,40 C20,30 30,50 50,20 C70,-10 80,30 100,10" fill="none"
+                                            stroke="var(--primary)" stroke-width="1.5"></path>
+                                    </svg>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Vibrant Floating Accent Shape -->
+                    <div class="card-accent">
+                        <div class="accent-glass">
+                            <i class="fa-solid fa-brain"></i>
+                            <div class="accent-text">AI ACTIVE</div>
+                        </div>
+                    </div>
+
+                    <!-- Front Floating Data Card -->
+                    <div class="card-data">
+                        <div class="card-data-top">
+                            <div class="ring-chart">
+                                <svg viewBox="0 0 36 36">
+                                    <path class="circle-bg"
+                                        d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                                    <path class="circle" stroke-dasharray="99.8, 100"
+                                        d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                                </svg>
+                            </div>
+                            <div style="text-align: right;">
+                                <div class="val">99.8%</div>
+                                <div class="lbl">Audit Precision</div>
+                            </div>
+                        </div>
+                        <div class="card-data-bottom">
+                            <div class="pulse-dot"></div>
+                            <span>Scanning 2,000+ sources live</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 2. Core Pillars / Features -->
+        <section class="container" id="features">
+            <div class="sec-title reveal">
+                <h2>Unmatched <span class="grad-t">Intelligence</span></h2>
+                <p>Execute bank-grade evaluations leveraging state-of-the-art vision models and live web synthesis.</p>
+            </div>
+
+            <div class="features-grid">
+                <div class="feat-card reveal">
+                    <i class="fa-solid fa-microchip feat-icon-1"></i>
+                    <h3>Neural Extraction</h3>
+                    <p>Process audited financials, GSTR-1, and GSTR-3B filings instantaneously with cross-verified
+                        accuracy.</p>
+                </div>
+
+                <div class="feat-card reveal" style="transition-delay: 0.1s;">
+                    <i class="fa-solid fa-satellite-dish feat-icon-2"></i>
+                    <h3>Autonomous Signals</h3>
+                    <p>Scrape E-Courts and global news networks to detect civil suits, bad press, and silent NPA signs
+                        daily.</p>
+                </div>
+
+                <div class="feat-card reveal" style="transition-delay: 0.2s;">
+                    <i class="fa-solid fa-gavel feat-icon-3"></i>
+                    <h3>Defensible Scoring</h3>
+                    <p>Every LEND/REJECT decision produces an Explainable AI summary detailing exact deductions and
+                        flags.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 3. Orchestration Workflow -->
+        <section class="container" style="margin-top: 100px;" id="architecture">
+            <div class="sec-title reveal">
+                <h2>The Processing <span class="grad-t">Pipeline</span></h2>
+            </div>
+
+            <div class="workflow-row reveal">
+                <div class="workflow-text">
+                    <span>PHASE 1</span>
+                    <h3>Document Ingest</h3>
+                    <p>The system digests PDFs, detects line items, calculates key financial ratios, and identifies
+                        revenue mismatches.</p>
+                    <ul class="workflow-list">
+                        <li><i class="fa-regular fa-circle-check" style="color: var(--primary);"></i> Automated Ratio
+                            Analysis</li>
+                        <li><i class="fa-regular fa-circle-check" style="color: var(--primary);"></i> GST Reconciliation
+                        </li>
+                        <li><i class="fa-regular fa-circle-check" style="color: var(--primary);"></i> Fraud Document
+                            Detection</li>
+                    </ul>
+                </div>
+                <div class="workflow-visual">
+                    <i class="fa-solid fa-file-invoice-dollar viz-icon" style="color: var(--primary);"></i>
+                    <div class="viz-badge" style="border-color: rgba(139, 92, 246, 0.4);">
+                        <i class="fa-solid fa-spinner fa-spin" style="color: var(--primary);"></i>
+                        <div>
+                            <div class="val" style="color: #fff;">3.5s</div>
+                            <div class="lbl">Extraction Speed</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="workflow-row reveal">
+                <div class="workflow-text">
+                    <span>PHASE 2</span>
+                    <h3>Deep Investigation</h3>
+                    <p>Our autonomous agent navigates regulatory ecosystems (MCA) to find active charges and
+                        disqualified directors.</p>
+                    <ul class="workflow-list">
+                        <li><i class="fa-regular fa-circle-check" style="color: var(--secondary);"></i> 360° Promoter
+                            Scan</li>
+                        <li><i class="fa-regular fa-circle-check" style="color: var(--secondary);"></i> Headwind News
+                            NLP</li>
+                        <li><i class="fa-regular fa-circle-check" style="color: var(--secondary);"></i> Active Charge
+                            Discovery</li>
+                    </ul>
+                </div>
+                <div class="workflow-visual"
+                    style="background: linear-gradient(145deg, rgba(236, 72, 153, 0.1), rgba(2, 6, 23, 0.8));">
+                    <i class="fa-solid fa-network-wired viz-icon" style="color: var(--secondary); opacity: 0.15;"></i>
+                    <div class="viz-badge" style="border-color: rgba(236, 72, 153, 0.4);">
+                        <div class="val" style="color: var(--secondary);">+2,000</div>
+                        <div class="lbl">Sources Scanned</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="workflow-row reveal">
+                <div class="workflow-text">
+                    <span>PHASE 3</span>
+                    <h3>Credit Adjudication</h3>
+                    <p>The rules engine weighs the 4 pillars (Health, GST, Promoters, Intel) against officer notes to
+                        generate a binding score.</p>
+                    <ul class="workflow-list">
+                        <li><i class="fa-regular fa-circle-check" style="color: var(--accent);"></i> 100-Point
+                            Algorithmic Scale</li>
+                        <li><i class="fa-regular fa-circle-check" style="color: var(--accent);"></i> Credit Officer
+                            Overrides</li>
+                        <li><i class="fa-regular fa-circle-check" style="color: var(--accent);"></i> Compliant PDF
+                            Generation</li>
+                    </ul>
+                </div>
+                <div class="workflow-visual"
+                    style="background: linear-gradient(145deg, rgba(6, 182, 212, 0.1), rgba(2, 6, 23, 0.8));">
+                    <i class="fa-solid fa-shield-cat viz-icon" style="color: var(--accent); opacity: 0.15;"></i>
+                    <div class="viz-badge" style="border-color: rgba(6, 182, 212, 0.4);">
+                        <div class="val" style="color: var(--accent);">CONDITIONS</div>
+                        <div class="lbl">System Decision</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 4. Ecosystem & Security -->
+        <section class="container" style="padding-top: 50px;" id="case-studies">
+            <div class="dual-section reveal" style="grid-template-columns: repeat(3, 1fr);">
+                <!-- Use Cases Panel -->
+                <div class="sub-panel glass-card">
+                    <i class="fa-solid fa-lightbulb"
+                        style="color: var(--primary); font-size: 2rem; margin-bottom: 20px;"></i>
+                    <h3>Case Studies</h3>
+                    <p>Real-world results from JFS, Zomato, and MSME lenders.</p>
+                    <div class="ind-tags">
+                        <div class="ind-tag">99% Extraction</div>
+                        <div class="ind-tag">12s TAT</div>
+                    </div>
+                    <a href="case-studies.html" class="btn-p">View Success</a>
+                </div>
+
+                <!-- Architecture Panel -->
+                <div class="sub-panel glass-card" id="architecture-teaser"
+                    style="background: linear-gradient(135deg, rgba(6, 182, 212, 0.05), rgba(2, 6, 23, 0.8));">
+                    <i class="fa-solid fa-sitemap"
+                        style="color: var(--accent); font-size: 2rem; margin-bottom: 20px;"></i>
+                    <h3>Architecture</h3>
+                    <p>Scalable, hybrid pipeline with cascading LLM fallback.</p>
+                    <div class="ind-tags">
+                        <div class="ind-tag">Hybrid Fusion</div>
+                        <div class="ind-tag">99.9% Uptime</div>
+                    </div>
+                    <a href="architecture.html" class="btn-p">Explore Tech</a>
+                </div>
+
+                <!-- API Panel -->
+                <div class="sub-panel glass-card" id="api"
+                    style="background: linear-gradient(135deg, rgba(236, 72, 153, 0.05), rgba(2, 6, 23, 0.8));">
+                    <i class="fa-solid fa-code"
+                        style="color: var(--secondary); font-size: 2rem; margin-bottom: 20px;"></i>
+                    <h3>Developer API</h3>
+                    <p>High-speed endpoints for seamless LOS integration.</p>
+                    <div class="sec-icons" style="margin-bottom: 20px;">
+                        <i class="fa-solid fa-terminal" style="color: var(--secondary);"></i>
+                        <i class="fa-solid fa-server" style="color: var(--secondary);"></i>
+                    </div>
+                    <a href="api-docs.html" class="btn-p">API Docs</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- 5. Live Global Telemetry -->
+        <section class="container" style="padding-top: 250px;">
+            <div class="sec-title reveal">
+                <h2>Live Network <span class="grad-t">Telemetry</span></h2>
+                <p>Tracking the real-time velocity of global entity resolutions and anomaly detections.</p>
+            </div>
+            <div class="telemetry-grid reveal">
+                <div class="tel-card">
+                    <i class="fa-solid fa-server" style="color: var(--primary); font-size: 1.5rem;"></i>
+                    <div class="tel-val" id="tel-docs">14,209</div>
+                    <div class="tel-lbl">Documents Parsed (24h)</div>
+                </div>
+                <div class="tel-card">
+                    <i class="fa-solid fa-network-wired" style="color: var(--secondary); font-size: 1.5rem;"></i>
+                    <div class="tel-val" id="tel-api">99.9%</div>
+                    <div class="tel-lbl">API Uptime</div>
+                </div>
+                <div class="tel-card">
+                    <i class="fa-solid fa-shield-virus" style="color: var(--accent); font-size: 1.5rem;"></i>
+                    <div class="tel-val" id="tel-fraud">842</div>
+                    <div class="tel-lbl">Anomalies Detected</div>
+                </div>
+                <div class="tel-card">
+                    <i class="fa-solid fa-bolt" style="color: #eab308; font-size: 1.5rem;"></i>
+                    <div class="tel-val" id="tel-speed">1.4s</div>
+                    <div class="tel-lbl">Avg Response Time</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 6. Real-Time Risk Anatomy -->
+        <section class="container" style="padding-top: 250px; padding-bottom: 100px;">
+            <div class="sec-title reveal">
+                <h2>Real-Time <span class="grad-t">Risk Anatomy</span></h2>
+                <p>Observe live model weights dynamically shifting as new macro-economic data is injected.</p>
+            </div>
+
+            <div class="risk-row reveal">
+                <div class="risk-chart-panel">
+                    <h3 style="font-size: 1.5rem; font-weight: 800; margin-bottom: 10px;">Market Sector Exposure</h3>
+                    <div class="data-bar-wrap">
+                        <div class="d-label"><span>Manufacturing Deficit</span><span class="d-val"
+                                id="db-val-1">42%</span></div>
+                        <div class="d-track">
+                            <div class="d-fill" id="df-1" style="width: 42%;"></div>
+                        </div>
+                    </div>
+                    <div class="data-bar-wrap">
+                        <div class="d-label"><span>Tech / SaaS Liquidity</span><span class="d-val"
+                                id="db-val-2">78%</span></div>
+                        <div class="d-track">
+                            <div class="d-fill" id="df-2"
+                                style="width: 78%; background: linear-gradient(90deg, var(--secondary), var(--accent));">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="data-bar-wrap">
+                        <div class="d-label"><span>Real Estate NPA Trend</span><span class="d-val"
+                                id="db-val-3">61%</span></div>
+                        <div class="d-track">
+                            <div class="d-fill" id="df-3"
+                                style="width: 61%; background: linear-gradient(90deg, #eab308, #ef4444);"></div>
+                        </div>
+                    </div>
+                    <div class="data-bar-wrap">
+                        <div class="d-label"><span>Supply Chain Friction</span><span class="d-val"
+                                id="db-val-4">24%</span></div>
+                        <div class="d-track">
+                            <div class="d-fill" id="df-4"
+                                style="width: 24%; background: linear-gradient(90deg, var(--accent), var(--primary));">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="risk-map-panel">
+                    <div class="radar-container">
+                        <div class="radar"></div>
+                        <div class="radar-circle-inner"></div>
+                        <div class="radar-dot dot-1"></div>
+                        <div class="radar-dot dot-2"></div>
+                        <div class="radar-dot dot-3"></div>
+                        <i class="fa-solid fa-satellite-dish" style="color: var(--accent); font-size: 2rem;"></i>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 5. Bottom CTA -->
+        <section class="container">
+            <div class="cta-box reveal">
+                <h2>Ready for Next-Gen <br><span class="grad-t">Analytics?</span></h2>
+                <p>Transform how you evaluate corporate borrowers today.</p>
+                <a href="dashboard.html" class="btn-p" style="padding: 24px 64px; font-size: 1.4rem;">Start Live Trial
+                    <i class="fa-solid fa-arrow-right" style="margin-left: 12px; font-size: 1.1rem;"></i></a>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-wrap">
+            <div class="f-logo">INTELLI-CREDIT</div>
+            <div class="f-links">
+                <span>Privacy</span>
+                <span>Terms</span>
+                <span>System Status</span>
+                <span>Support</span>
+            </div>
+        </div>
+        <div class="f-copy">&copy; 2026 INTELLI-CREDIT PLATFORM. ALL RIGHTS RESERVED.</div>
+    </footer>
+
+    <!-- Animations Script -->
+    <script>
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.reveal, .reveal-left, .reveal-right').forEach(el => observer.observe(el));
+
+        // 3D Parallax Mouse Tracking for Hero Visual Elements
+        const heroVisual = document.querySelector('.hero-visual');
+        if (heroVisual) {
+            heroVisual.addEventListener('mouseenter', () => {
+                heroVisual.classList.add('tracking');
+            });
+
+            heroVisual.addEventListener('mousemove', (e) => {
+                const rect = heroVisual.getBoundingClientRect();
+                const x = e.clientX - rect.left - (rect.width / 2);
+                const y = e.clientY - rect.top - (rect.height / 2);
+
+                // Calculate tilt limits (max 15 degrees)
+                const xAxis = -(y / rect.height) * 20;
+                const yAxis = (x / rect.width) * 20;
+
+                heroVisual.style.transform = `rotateX(${xAxis}deg) rotateY(${yAxis}deg)`;
+            });
+
+            heroVisual.addEventListener('mouseleave', () => {
+                heroVisual.classList.remove('tracking');
+                heroVisual.style.transform = `rotateX(0deg) rotateY(0deg)`;
+            });
+
+            // Live Telemetry Number Simulation (Hero)
+            setInterval(() => {
+                // Update RSI Index
+                const rsi = document.querySelector('.stats-row .stat-box:nth-child(1) .val');
+                if (rsi) rsi.innerText = (82 + Math.random() * 5).toFixed(1);
+
+                // Update Scanned Sources Counter
+                const sourcesNode = document.querySelector('.card-data-bottom span');
+                if (sourcesNode) {
+                    let text = sourcesNode.innerText;
+                    let currentCount = parseInt(text.replace(/[^0-9]/g, '')) || 2041;
+                    if (currentCount > 50000) currentCount = 2041; // reset loop guard
+                    currentCount += Math.floor(Math.random() * 9) + 1;
+                    sourcesNode.innerText = `Scanning ${currentCount.toLocaleString()}+ sources live`;
+                }
+            }, 1800);
+        }
+
+        // Live Global Telemetry Animations (Section 5)
+        let docCount = 14209;
+        let anomalyCount = 842;
+        setInterval(() => {
+            docCount += Math.floor(Math.random() * 5);
+            const tDocs = document.getElementById('tel-docs');
+            if (tDocs) tDocs.innerText = docCount.toLocaleString();
+
+            const tSpeed = document.getElementById('tel-speed');
+            if (tSpeed) tSpeed.innerText = (1.2 + Math.random() * 0.4).toFixed(2) + 's';
+
+            if (Math.random() > 0.8) {
+                anomalyCount += 1;
+                const tFraud = document.getElementById('tel-fraud');
+                if (tFraud) tFraud.innerText = anomalyCount.toLocaleString();
+            }
+        }, 1100);
+
+        // Real Time Risk Anatomy Bars (Section 6)
+        setInterval(() => {
+            const dataBars = [
+                { id: 1, base: 42, variance: 7 },
+                { id: 2, base: 78, variance: 5 },
+                { id: 3, base: 61, variance: 9 },
+                { id: 4, base: 24, variance: 4 }
+            ];
+
+            dataBars.forEach(bar => {
+                const shift = (Math.random() * bar.variance * 2) - bar.variance;
+                const newVal = Math.round(bar.base + shift);
+
+                const dbVal = document.getElementById(`db-val-${bar.id}`);
+                const dbFill = document.getElementById(`df-${bar.id}`);
+
+                if (dbVal && dbFill) {
+                    dbVal.innerText = newVal + '%';
+                    dbFill.style.width = newVal + '%';
+                }
+            });
+        }, 2500);
+    </script>
+</body>
+
+</html>
+```

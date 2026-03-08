@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Features | Intelli-Credit</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="landing.css">
+</head>
+
+<body>
+    <div class="bg-grid"></div>
+    <div class="bg-glow"></div>
+
+    <nav>
+        <div class="nav-container">
+            <div class="logo"><a href="index.html">INTELLI-CREDIT</a></div>
+            <div class="nav-items">
+                <a href="index.html">Home</a>
+                <a href="features.html" style="color:#fff;">Features</a>
+                <a href="case-studies.html">Case Studies</a>
+                <a href="architecture.html">Architecture</a>
+                <a href="api-docs.html">API</a>
+            </div>
+            <a href="dashboard.html" class="btn-p">Launch Dashboard</a>
+        </div>
+    </nav>
+
+    <main class="container" style="padding-top: 180px;">
+        <div class="sec-title reveal visible">
+            <h1 style="font-size: 4rem; margin-bottom: 20px;">Platform <span class="grad-t">Capabilities</span></h1>
+            <p>A deep dive into the neural engines and autonomous agents that power our credit appraisals.</p>
+        </div>
+
+        <!-- Pillar 1 -->
+        <div class="workflow-row reveal-left visible">
+            <div class="workflow-text">
+                <span style="background: rgba(139, 92, 246, 0.15); color: var(--primary);">PILLAR 1</span>
+                <h3>Deep Document Intelligence</h3>
+                <p>Our vision-language models don't just "read" PDFs—they understand financial semantics. We extract
+                    over 40+ financial ratios directly from balance sheets, P&L accounts, and cash flow statements with
+                    near-zero error rates.</p>
+                <div class="ind-tags" style="justify-content: flex-start;">
+                    <div class="ind-tag">GSTR-1 Integration</div>
+                    <div class="ind-tag">Table-to-Text Vision</div>
+                </div>
+            </div>
+            <div class="workflow-visual anim-float">
+                <i class="fa-solid fa-file-invoice-dollar viz-icon anim-glow" style="color: var(--primary);"></i>
+                <div class="viz-badge" style="border-color: rgba(139, 92, 246, 0.4);">
+                    <div class="val" style="color: #fff;">40+</div>
+                    <div class="lbl">Ratios Analyzed</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Pillar 2 -->
+        <div class="workflow-row reveal-right visible" style="flex-direction: row-reverse;">
+            <div class="workflow-text" style="text-align: right;">
+                <span style="background: rgba(236, 72, 153, 0.15); color: var(--secondary);">PILLAR 2</span>
+                <h3>Targeted Research Agent</h3>
+                <p>An autonomous agent that "lives" on the web during analysis. It scours litigation portals, news
+                    archives, and MCA records to find the truth that isn't in the provided documents.</p>
+                <div class="ind-tags" style="justify-content: flex-end;">
+                    <div class="ind-tag">Sentiment NLP</div>
+                    <div class="ind-tag">Litigation Check</div>
+                </div>
+            </div>
+            <div class="workflow-visual anim-float"
+                style="background: linear-gradient(145deg, rgba(236, 72, 153, 0.1), rgba(2, 6, 23, 0.8));">
+                <i class="fa-solid fa-satellite-dish viz-icon anim-glow" style="color: var(--secondary);"></i>
+                <div class="viz-badge" style="border-color: rgba(236, 72, 153, 0.4);">
+                    <div class="val" style="color: var(--secondary);">LIVE</div>
+                    <div class="lbl">Web Scouring</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Pillar 3 -->
+        <div class="workflow-row reveal-left visible">
+            <div class="workflow-text">
+                <span style="background: rgba(6, 182, 212, 0.15); color: var(--accent);">PILLAR 3</span>
+                <h3>Explainable Scoring Engine</h3>
+                <p>No "Black Boxes". Every score is broken down into four distinct categories: Financial Health, GST
+                    Regularity, Promoter Integrity, and Market Intelligence.</p>
+                <div class="ind-tags" style="justify-content: flex-start;">
+                    <div class="ind-tag">100-Point Scale</div>
+                    <div class="ind-tag">Decision Logic</div>
+                </div>
+            </div>
+            <div class="workflow-visual anim-float"
+                style="background: linear-gradient(145deg, rgba(6, 182, 212, 0.1), rgba(2, 6, 23, 0.8));">
+                <i class="fa-solid fa-brain viz-icon anim-glow" style="color: var(--accent);"></i>
+                <div class="viz-badge" style="border-color: rgba(6, 182, 212, 0.4);">
+                    <div class="val" style="color: var(--accent);">Scorecard</div>
+                    <div class="lbl">V3 Engine</div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer style="margin-top: 100px;">
+        <div class="footer-wrap">
+            <div class="f-logo">INTELLI-CREDIT</div>
+            <div class="f-links">
+                <span>Privacy</span>
+                <span>Terms</span>
+                <span>System Status</span>
+                <span>Support</span>
+            </div>
+        </div>
+        <div class="f-copy">&copy; 2026 INTELLI-CREDIT PLATFORM. ALL RIGHTS RESERVED.</div>
+    </footer>
+
+    <script>
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.1 });
+        document.querySelectorAll('.reveal, .reveal-left, .reveal-right').forEach(el => observer.observe(el));
+    </script>
+</body>
+
+</html>
