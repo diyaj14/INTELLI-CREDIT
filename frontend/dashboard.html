@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Intelli-Credit | Enterprise AI Risk Dashboard</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <!-- Premium Background Grids that match landing page -->
+    <div class="bg-grid"></div>
+    <div class="bg-glow"></div>
+
+    <header>
+        <a href="index.html" style="text-decoration: none;">
+            <div class="brand">INTELLI-CREDIT</div>
+        </a>
+        <div class="nav-links">
+            <a href="index.html" class="nav-item"
+                style="display: flex; align-items: center; gap: 8px; border: 1px solid rgba(255,255,255,0.2); padding: 8px 16px; border-radius: 20px; background: rgba(255,255,255,0.05); transition: all 0.3s;">
+                <i class="fa-solid fa-arrow-left"></i> Back to Home
+            </a>
+        </div>
+    </header>
+
+    <div class="dashboard">
+        <!-- Pipeline Navigation -->
+        <aside class="panel">
+            <h3 class="panel-header">Pipeline <span style="color: var(--primary-color)">Analysis</span></h3>
+
+            <div class="step-item" id="step-1">
+                <div class="step-circle step-icon-1">
+                    <i class="fa-solid fa-file-invoice-dollar"></i>
+                </div>
+                <div>
+                    <h4 class="step-title">M1: Data Ingest</h4>
+                    <p class="step-desc">P&L, GST Extraction</p>
+                </div>
+            </div>
+
+            <div class="step-item" id="step-2">
+                <div class="step-circle step-icon-2">
+                    <i class="fa-solid fa-network-wired"></i>
+                </div>
+                <div>
+                    <h4 class="step-title">M2: Research</h4>
+                    <p class="step-desc">MCA, Litigation & News</p>
+                </div>
+            </div>
+
+            <div class="step-item" id="step-3">
+                <div class="step-circle step-icon-3">
+                    <i class="fa-solid fa-shield-cat"></i>
+                </div>
+                <div>
+                    <h4 class="step-title">M3: Decision</h4>
+                    <p class="step-desc">Weighted Score Engine</p>
+                </div>
+            </div>
+
+
+            <div class="active-target-box">
+                <span class="target-lbl">ACTIVE TARGET</span>
+                <div id="targetName" class="target-val">Apex Textiles Pvt Ltd</div>
+            </div>
+
+        </aside>
+
+        <!-- Main Visualizer -->
+        <main class="main-stage">
+            <div class="visualizer">
+                <!-- Abstract floating bits inside the main stage -->
+                <div class="floating-particle float-1"></div>
+                <div class="floating-particle float-2"></div>
+
+                <svg class="circle-svg" width="300" height="300" viewBox="0 0 300 300">
+                    <circle cx="150" cy="150" r="130" stroke="rgba(255,255,255,0.05)" stroke-width="8" fill="none">
+                    </circle>
+                    <circle id="progressCircle" cx="150" cy="150" r="130" stroke="url(#g)" stroke-width="8"
+                        stroke-linecap="round" fill="none"></circle>
+                    <defs>
+                        <linearGradient id="g" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" stop-color="#8b5cf6" />
+                            <stop offset="100%" stop-color="#06b6d4" />
+                        </linearGradient>
+                    </defs>
+                </svg>
+
+
+                <div class="orb">
+                    <div id="scoreValue" class="val">00</div>
+                    <div class="orb-footer">CREDIT SCORE</div>
+                </div>
+            </div>
+
+            <div id="statusLbl" class="status-outer">Waiting Startup</div>
+
+
+
+
+
+            <div id="uploadArea"
+                style="margin-top: 30px; width: 100%; max-width: 400px; display: flex; flex-direction: column; align-items: center; gap: 16px;">
+                <input type="file" id="pdfInput" accept=".pdf,.doc,.docx,.xls,.xlsx,.csv" style="display: none;">
+                <div onclick="document.getElementById('pdfInput').click()"
+                    style="width: 100%; padding: 8px; border: 2px dashed rgba(139, 92, 246, 0.3); border-radius: 20px; background: rgba(139, 92, 246, 0.05); cursor: pointer; transition: 0.3s; display: flex; flex-direction: column; align-items: center; gap: 4px;"
+                    onmouseover="this.style.background='rgba(139, 92, 246, 0.1)'; this.style.borderColor='rgba(139, 92, 246, 0.6)'"
+                    onmouseout="this.style.background='rgba(139, 92, 246, 0.05)'; this.style.borderColor='rgba(139, 92, 246, 0.3)'">
+                    <i class="fa-solid fa-cloud-arrow-up" style="font-size: 1.5rem; color: var(--primary-color);"></i>
+                    <span id="uploadLabel" style="font-size: 0.9rem; font-weight: 600; color: var(--text-muted);">Drop
+                        Documents or Click to Upload</span>
+                    <span style="font-size: 0.7rem; color: rgba(255,255,255,0.3);">PDF, Financials, or GST
+                        Reports</span>
+                </div>
+                <div id="fileList"
+                    style="display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; min-height: 24px;"></div>
+            </div>
+
+            <button id="startBtn" class="btn-trigger" onclick="runFullPipeline()" style="margin-top: 16px;">EXECUTE FULL
+                AUDIT</button>
+            <div style="margin-top: 5px; display: flex; align-items: center; justify-content: center; gap: 10px;">
+                <button onclick="runFullPipeline('ollama')"
+                    style="cursor: pointer; background: rgba(255,255,255,0.05); padding: 5px 15px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.1); font-size: 0.8rem; color: #94a3b8; transition: all 0.3s; display: flex; align-items: center; gap: 5px;">
+                    <i class="fa-solid fa-cube"></i> Try Ollama
+                </button>
+                <button onclick="runFullPipeline('groq')"
+                    style="cursor: pointer; background: rgba(255,255,255,0.05); padding: 5px 15px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.1); font-size: 0.8rem; color: #94a3b8; transition: all 0.3s; display: flex; align-items: center; gap: 5px;">
+                    <i class="fa-solid fa-bolt" style="color: #f59e0b;"></i> Try Groq
+                </button>
+            </div>
+
+
+
+        </main>
+
+        <!-- Right Insights -->
+        <section class="panel">
+            <h3 class="panel-header"><i class="fa-solid fa-bolt" style="color: var(--accent-color)"></i> Live <span
+                    style="color: var(--accent-color)">Logs</span></h3>
+            <div id="dataStream" class="data-stream">
+                <div class="awaiting-stream">
+                    <i class="fa-solid fa-satellite fa-3x"></i>
+                    <p>Awaiting Data Stream...</p>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+
+</html>

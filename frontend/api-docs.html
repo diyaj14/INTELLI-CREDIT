@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Documentation | Intelli-Credit</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="landing.css">
+    <style>
+        .api-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            margin-top: 60px;
+        }
+
+        .code-block {
+            background: #020617;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            padding: 30px;
+            font-family: 'Courier New', Courier, monospace;
+            color: #94a3b8;
+            overflow-x: auto;
+            position: relative;
+        }
+
+        .code-block::before {
+            content: "REQUEST";
+            position: absolute;
+            top: 10px;
+            right: 20px;
+            font-size: 0.7rem;
+            font-weight: 800;
+            color: var(--primary);
+            letter-spacing: 1px;
+        }
+
+        .method {
+            color: var(--primary);
+            font-weight: 800;
+            margin-right: 10px;
+        }
+
+        .endpoint {
+            color: #fff;
+            font-weight: 700;
+        }
+
+        pre {
+            margin-top: 20px;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        .key {
+            color: var(--secondary);
+        }
+
+        .string {
+            color: var(--accent);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="bg-grid"></div>
+    <div class="bg-glow"></div>
+
+    <nav>
+        <div class="nav-container">
+            <div class="logo"><a href="index.html">INTELLI-CREDIT</a></div>
+            <div class="nav-items">
+                <a href="index.html">Home</a>
+                <a href="features.html">Features</a>
+                <a href="case-studies.html">Case Studies</a>
+                <a href="architecture.html">Architecture</a>
+                <a href="api-docs.html" style="color:#fff;">API</a>
+            </div>
+            <a href="dashboard.html" class="btn-p">Launch Dashboard</a>
+        </div>
+    </nav>
+
+    <main class="container feature-page" style="padding-top: 180px;">
+        <div class="sec-title reveal visible">
+            <h1 style="font-size: 4rem; margin-bottom: 20px;">Developer <span class="grad-t">API</span></h1>
+            <p>Integrate our credit intelligence directly into your Loan Origination System (LOS).</p>
+        </div>
+
+        <section id="appraise" style="padding-top: 50px;">
+            <div class="api-grid">
+                <div class="workflow-text reveal-left visible" style="text-align: left;">
+                    <span style="background: rgba(6, 182, 212, 0.15); color: var(--accent);">POST</span>
+                    <h3>/analyze</h3>
+                    <p>Submits one or more financial PDFs for multi-pillar appraisal. Returns a full risk report with
+                        financial ratios and sentiment data.</p>
+                    <ul class="workflow-list">
+                        <li><i class="fa-solid fa-code" style="color: var(--accent);"></i> Multi-part form-data</li>
+                        <li><i class="fa-solid fa-code" style="color: var(--accent);"></i> Supports OCR-ready PDFs</li>
+                    </ul>
+                </div>
+                <div class="code-block glass-card reveal-right visible">
+                    <div><span class="method">POST</span> <span class="endpoint">/api/analyze</span></div>
+                    <pre>
+{
+  <span class="key">"company"</span>: <span class="string">"Tata Industries"</span>,
+  <span class="key">"files"</span>: [<span class="string">"bs_2024.pdf"</span>],
+  <span class="key">"mode"</span>: <span class="string">"deep_search"</span>
+}
+                    </pre>
+                </div>
+            </div>
+        </section>
+
+        <section id="status" style="padding-top: 100px; padding-bottom: 100px;">
+            <div class="api-grid">
+                <div class="code-block glass-card reveal-left visible" style="order: 1;">
+                    <div><span class="method">GET</span> <span class="endpoint">/api/report/{id}</span></div>
+                    <pre>
+{
+  <span class="key">"overall_score"</span>: <span class="string">84.2</span>,
+  <span class="key">"decision"</span>: <span class="string">"LEND"</span>,
+  <span class="key">"flags"</span>: [<span class="string">"GST_MISMATCH"</span>]
+}
+                    </pre>
+                </div>
+                <div class="workflow-text reveal-right visible" style="text-align: left; order: 2;">
+                    <span style="background: rgba(139, 92, 246, 0.15); color: var(--primary);">GET</span>
+                    <h3>/report</h3>
+                    <p>Retrieves the final synthesized credit memo and raw JSON data for a specific analysis session.
+                    </p>
+                    <ul class="workflow-list">
+                        <li><i class="fa-solid fa-file-pdf" style="color: var(--primary);"></i> JSON + PDF Output</li>
+                        <li><i class="fa-solid fa-shield-halved" style="color: var(--primary);"></i> Encrypted transport
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer style="margin-top: 100px;">
+        <div class="footer-wrap">
+            <div class="f-logo">INTELLI-CREDIT</div>
+            <div class="f-links">
+                <span>Privacy</span>
+                <span>Terms</span>
+                <span>System Status</span>
+                <span>Support</span>
+            </div>
+        </div>
+        <div class="f-copy">&copy; 2026 INTELLI-CREDIT PLATFORM. ALL RIGHTS RESERVED.</div>
+    </footer>
+
+    <script>
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.1 });
+        document.querySelectorAll('.reveal, .reveal-left, .reveal-right').forEach(el => observer.observe(el));
+    </script>
+</body>
+
+</html>
