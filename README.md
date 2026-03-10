@@ -1,10 +1,7 @@
-<target_file>d:\GITHUB\IITH\README.md</target_file>
-<file_contents>
+
 # Intelli-Credit: Next-Gen Corporate Credit Appraisal 🏦⚡
 
 **Intelli-Credit** is an AI-powered system designed to replace a senior bank credit manager's 3-week manual credit appraisal workflow with a seamless **3-minute AI workflow**. Developed for the Indian corporate credit ecosystem, it bridges the intelligence gap by automating data ingestion, synthesizing market research, cross-validating GST compliance, and generating a transparent, regulator-ready Credit Appraisal Memo (CAM).
-
-![Intelli-Credit Dashboard](frontend/assets/dashboard_preview.png) *(Note: Ensure you have your screenshots here)*
 
 ---
 
@@ -112,4 +109,4 @@ This project was built for the **IIT Hyderabad Intelli-Credit Challenge**.
 *   **Explainable Rejections:** Not just a black box score. Every penalty has a source citation (e.g. *"-18 pts due to active litigation found on eCourts"*).
 *   **"3 Minutes vs. 3 Weeks":** A live demonstration of massive operational cost reduction in loan underwriting.
 *   **Indian Context:** Built natively to handle Indian accounting standards, GSTIN validation simulated logic, and MSME constraints.
-</file_contents>
+
