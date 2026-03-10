@@ -6,14 +6,7 @@ import logging
 # Add root directory to sys.path
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
-from modules.document_intelligence.pipeline import DocumentPipeline
-from modules.research_agent.pipeline import ResearchPipeline
-from modules.credit_scoring.scorecard import Scorecard
-
-from modules.credit_scoring.recommendation import RecommendationEngine
-
-from modules.report_generator.pdf_generator import PDFGenerator
-from modules.research_agent.hybrid_merger import HybridMerger
+# Heavy modules are imported lazily inside orchestrate() to reduce startup RAM usage
 
 logger = logging.getLogger(__name__)
 
@@ -23,6 +16,14 @@ def orchestrate(uploaded_files, company_name=None, demo_mode=False, progress_cal
     """
     Unified entry point for the Intelli-Credit appraisal process.
     """
+    # Lazy imports — only load heavy modules when a request comes in (saves startup RAM)
+    from modules.document_intelligence.document_pipeline import DocumentPipeline
+    from modules.research_agent.research_pipeline import ResearchPipeline
+    from modules.credit_scoring.scorecard import Scorecard
+    from modules.credit_scoring.recommendation import RecommendationEngine
+    from modules.report_generator.pdf_generator import PDFGenerator
+    from modules.research_agent.hybrid_merger import HybridMerger
+
     def log_progress(msg, prog):
         if progress_callback: progress_callback(msg, prog)
         logger.info(f"PROGRESS: {msg} ({prog}%)")
