@@ -12,6 +12,8 @@ venv/
 uploads/
 *.pdf
 *.json
+!railway.json
+!vercel.json
 *.log
 !requirements.txt
 !index.html
