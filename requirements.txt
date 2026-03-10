@@ -17,8 +17,8 @@ python-multipart
 # --- Module 1: Document Intelligence ---
 pdfplumber==0.11.0
 camelot-py[cv]==0.11.0
-paddleocr==2.7.3
-paddlepaddle==2.6.2
+# paddleocr and paddlepaddle removed — no wheels for Python 3.14+
+# OCR on scanned PDFs is gracefully skipped if not installed
 pdf2image==1.17.0
 opencv-python-headless==4.9.0.80
 openpyxl==3.1.2
