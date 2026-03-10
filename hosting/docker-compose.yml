@@ -1,0 +1,20 @@
+# ============================================================
+#  docker-compose.yml — Run locally with Docker
+#  Usage: docker-compose up --build
+# ============================================================
+
+version: "3.9"
+
+services:
+  intelli-credit:
+    build:
+      context: .. # Build from repo root
+      dockerfile: hosting/Dockerfile
+    ports:
+      - "8001:8001"
+    env_file:
+      - ../.env # Load your local .env file
+    volumes:
+      - /tmp/uploads:/tmp/uploads
+      - /tmp/reports:/tmp/reports
+    restart: unless-stopped

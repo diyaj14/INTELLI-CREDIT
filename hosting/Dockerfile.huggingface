@@ -1,0 +1,49 @@
+# ============================================================
+#  Dockerfile.huggingface — For Hugging Face Spaces
+#  Hugging Face requires port 7860
+#
+#  How to use:
+#  1. Go to https://huggingface.co/new-space
+#  2. Choose SDK: Docker
+#  3. Copy THIS file contents into the Space's Dockerfile
+#     (rename it to just "Dockerfile" in the HF repo root)
+#  4. Add your secrets in Space Settings -> Variables
+# ============================================================
+
+FROM python:3.11-slim
+
+# System dependencies
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    poppler-utils \
+    ghostscript \
+    libsm6 \
+    libxext6 \
+    libxrender1 \
+    libglib2.0-0 \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
+
+# Hugging Face Spaces runs as a non-root user
+RUN useradd -m -u 1000 user
+USER user
+ENV HOME=/home/user \
+    PATH=/home/user/.local/bin:$PATH
+
+WORKDIR /home/user/app
+
+# Copy and install Python dependencies
+COPY --chown=user requirements.txt ./requirements.txt
+RUN pip install --no-cache-dir --upgrade -r requirements.txt
+
+# Copy project files
+COPY --chown=user backend/    ./backend/
+COPY --chown=user frontend/   ./frontend/
+COPY --chown=user modules/    ./modules/
+
+# Create writable runtime dirs
+RUN mkdir -p /tmp/uploads /tmp/reports
+
+# Hugging Face Spaces MUST use port 7860
+EXPOSE 7860
+
+CMD ["uvicorn", "backend.app:app", "--host", "0.0.0.0", "--port", "7860"]
